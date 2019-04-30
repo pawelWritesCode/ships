@@ -20,6 +20,7 @@
   },
   "homepage": "https://github.com/pawelWritesCode/ships#readme",
   "dependencies": {
+    "express": "^4.16.4",
     "npm": "^6.9.0"
   }
 }
