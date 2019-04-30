@@ -7,7 +7,9 @@
     
     cd ../backend
     yarn install
+    yarn create-config
 ```
+Next move to config dir and fulfill dev.js config file.
 
 ## Run project in dev mode:
 ```bash

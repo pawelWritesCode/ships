@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "start": "nodemon index.js",
-    "dev": "concurrently \"nodemon index.js\" \"yarn --cwd ../frontend start\""
+    "dev": "concurrently \"nodemon index.js\" \"yarn --cwd ../frontend start\"",
+    "create-config": "echo module.exports = { mongo_uri: '' } > ./config/dev.js"
   },
   "repository": {
     "type": "git",
