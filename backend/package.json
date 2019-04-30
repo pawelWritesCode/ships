@@ -1,0 +1,25 @@
+{
+  "name": "ships_backend",
+  "version": "1.0.0",
+  "description": "This is backend for ships",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pawelWritesCode/ships.git"
+  },
+  "keywords": [
+    "ships"
+  ],
+  "author": "Pawel Ch",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/pawelWritesCode/ships/issues"
+  },
+  "homepage": "https://github.com/pawelWritesCode/ships#readme",
+  "dependencies": {
+    "npm": "^6.9.0"
+  }
+}
