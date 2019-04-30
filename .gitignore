@@ -7,3 +7,4 @@ frontend/yarn-debug.log*
 frontend/yarn-error.log*
 frontend/npm-debug.log*
 backend/node_modules
+backend/config/dev.js
