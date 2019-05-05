@@ -2,7 +2,6 @@ const mongoose = require('mongoose');
 const User = mongoose.model('users'); //I'm not requiring model file, instead I'm connecting to it through mongoose API
 
 module.exports = {
-    authenticate,
     getAll,
     create
 }

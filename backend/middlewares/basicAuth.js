@@ -1,4 +1,4 @@
-const userService = require('../services/user');
+const authService = require('../services/auth');
 
 module.exports = basicAuth;
 
@@ -19,7 +19,7 @@ async function basicAuth(req, res, next) {
     const credentials = Buffer.from(base64Credentials, 'base64').toString('ascii');
     const [username, password] = credentials.split(':');
 
-    const user = await userService.authenticate({username, password});
+    const user = await authService.authenticate({username, password});
 
     if(!user) {
         return res.status(401).json({message: 'Invalid Authentication Credentials'});
