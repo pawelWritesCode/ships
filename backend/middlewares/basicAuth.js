@@ -1,10 +1,11 @@
-const userService = require('./user');
+const userService = require('../services/user');
 
 module.exports = basicAuth;
 
 async function basicAuth(req, res, next) {
 
-    if(req.path === '/users/authenticate' || (req.path === '/users' && req.method === 'POST')) {
+    //routes that don't need basic auth
+    if(req.path === '/api/authenticate' || (req.path === '/api/users' && req.method === 'POST')) {
         return next();
     }
 

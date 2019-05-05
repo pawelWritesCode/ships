@@ -5,12 +5,13 @@ const app = express()
 
 const port = 5000
 const keys = require('./config/keys')
-const errorHandler = require('./services/errorHandler');
+const errorHandler = require('./middlewares/errorHandler');
 
 require('./models/User');
 
-const authRoutes = require('./routes/usersRoutes');
-const basicAuth = require('./services/basicAuth');
+const userRoutes = require('./routes/usersRoutes');
+const authRoutes = require('./routes/authRoutes');
+const basicAuth = require('./middlewares/basicAuth');
 
 mongoose.connect(keys.mongo_uri);
 
@@ -27,6 +28,7 @@ app.get('/', (req, res) => res.send('Hello World!'));
 
 app.use(basicAuth);
 authRoutes(app);
+userRoutes(app);
 
 app.use(errorHandler);
 
