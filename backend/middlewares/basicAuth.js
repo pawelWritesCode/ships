@@ -1,10 +1,11 @@
-const userService = require('./user');
+const authService = require('../services/auth');
 
 module.exports = basicAuth;
 
 async function basicAuth(req, res, next) {
 
-    if(req.path === '/users/authenticate' || (req.path === '/users' && req.method === 'POST')) {
+    //routes that don't need basic auth
+    if(req.path === '/api/authenticate' || (req.path === '/api/users' && req.method === 'POST')) {
         return next();
     }
 
@@ -18,7 +19,7 @@ async function basicAuth(req, res, next) {
     const credentials = Buffer.from(base64Credentials, 'base64').toString('ascii');
     const [username, password] = credentials.split(':');
 
-    const user = await userService.authenticate({username, password});
+    const user = await authService.authenticate({username, password});
 
     if(!user) {
         return res.status(401).json({message: 'Invalid Authentication Credentials'});
