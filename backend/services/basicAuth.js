@@ -18,11 +18,7 @@ async function basicAuth(req, res, next) {
     const credentials = Buffer.from(base64Credentials, 'base64').toString('ascii');
     const [username, password] = credentials.split(':');
 
-    console.log('username: ' + username + ' password: ' + password);
-
     const user = await userService.authenticate({username, password});
-
-    console.log('user: ', user);
 
     if(!user) {
         return res.status(401).json({message: 'Invalid Authentication Credentials'});
