@@ -7,6 +7,8 @@ const port = 5000
 const keys = require('./config/keys')
 const errorHandler = require('./services/errorHandler');
 
+require('./models/User');
+
 const authRoutes = require('./routes/usersRoutes');
 const basicAuth = require('./services/basicAuth');
 

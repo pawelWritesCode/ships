@@ -4,7 +4,7 @@ module.exports = basicAuth;
 
 async function basicAuth(req, res, next) {
 
-    if(req.path === '/users/authenticate') {
+    if(req.path === '/users/authenticate' || (req.path === '/users' && req.method === 'POST')) {
         return next();
     }
 
