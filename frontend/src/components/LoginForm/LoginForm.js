@@ -5,7 +5,7 @@ class LoginForm extends Component {
         return (
             <div>
                 <form className="App-LoginForm">
-                    div.form-group
+
                 </form>
             </div>
         )
