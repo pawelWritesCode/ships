@@ -16,7 +16,7 @@ class LoginForm extends Component {
                     <Label>Password</Label>
                     <Input type="password" name="password" className="loginForm-password" placeholder="Type your password" />
                 </FormGroup>
-                <Button className="loginForm-button" color="success">Zaloguj</Button>
+                <Button className="loginForm-button" color="success" onClick={this.props.login}>Zaloguj</Button>
             </Form>
         )
     }

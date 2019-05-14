@@ -3,6 +3,7 @@ import LoginForm from '../../components/LoginForm';
 import RegisterForm from '../../components/RegisterForm';
 import {Link} from "react-router-dom";
 import { Button } from 'reactstrap';
+import { login } from '../../services/auth';
 
 const authenticationStates = {
     login: 'login',
@@ -18,6 +19,7 @@ class Authentication extends Component {
         }
 
         this.changeForm = this.changeForm.bind(this);
+        this.attemptLogin = this.attemptLogin.bind(this);
     }
 
     /**
@@ -40,10 +42,21 @@ class Authentication extends Component {
         }
     }
 
+
+    attemptLogin(e) {
+        e.preventDefault();
+        const clickedElement = e.target;
+        console.log(clickedElement);
+        const loginInput = clickedElement.closest('.loginForm-login');
+        console.log(loginInput.value);
+        const passInput = clickedElement.closest('.loginForm-password');
+        console.log(passInput.value);
+    }
+
     renderForm() {
         switch(this.state.type) {
             case authenticationStates.login: {
-                return <LoginForm/>
+                return <LoginForm attemptLogin={this.attemptLogin}/>
             }
             case authenticationStates.register: {
                 return <RegisterForm/>
