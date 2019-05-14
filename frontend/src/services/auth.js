@@ -40,6 +40,27 @@ export function login(username, password) {
         })
 }
 
+export function register(username, password, retypedPassword, firstName, lastName) {
+    if(password !== retypedPassword) {
+        return;
+    }
+
+    const requestOpts = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({username, password, firstName, lastName})
+    }
+
+    return fetch('http://localhost:5000/api/users', requestOpts)
+        .then(resp => {
+            if(!resp.ok) {
+                return;
+            }
+
+            return resp.status
+        });
+}
+
 /**
  * This method removes from local storage user data
  */
