@@ -3,12 +3,7 @@ import LoginForm from '../../components/LoginForm';
 import RegisterForm from '../../components/RegisterForm';
 import {Link} from "react-router-dom";
 import { Button } from 'reactstrap';
-import { login } from '../../services/auth';
-
-const authenticationStates = {
-    login: 'login',
-    register: 'register'
-}
+import { login, authenticationStates } from '../../services/auth';
 
 class Authentication extends Component {
     constructor(props) {
@@ -19,6 +14,7 @@ class Authentication extends Component {
         }
 
         this.changeForm = this.changeForm.bind(this);
+        this.changeType = this.changeType.bind(this);
     }
 
     /**
@@ -30,13 +26,19 @@ class Authentication extends Component {
         const clickedElement = e.target;
         switch(clickedElement.value) {
             case authenticationStates.login: {
-                return this.setState({type: authenticationStates.register});
+                const newState = {...this.state};
+                newState.type = authenticationStates.register;
+                return this.setState(newState);
             }
             case authenticationStates.register: {
-                return this.setState({type: authenticationStates.login});
+                const newState = {...this.state};
+                newState.type = authenticationStates.login;
+                return this.setState(newState);
             }
             default: {
-                return this.setState({type: authenticationStates.login});
+                const newState = {...this.state};
+                newState.type = authenticationStates.login;
+                return this.setState(newState);
             }
         }
     }
@@ -47,12 +49,19 @@ class Authentication extends Component {
                 return <LoginForm/>
             }
             case authenticationStates.register: {
-                return <RegisterForm/>
+                return <RegisterForm changeType={this.changeType} />
             }
             default: {
                 return <LoginForm/>
             }
         }
+    }
+
+    changeType(type) {
+        console.log('typ: ', type);
+        const newState = {...this.state};
+        newState.type = type;
+        this.setState(newState);
     }
 
     render() {

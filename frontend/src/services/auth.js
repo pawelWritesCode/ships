@@ -1,3 +1,8 @@
+export const authenticationStates = {
+    login: 'login',
+    register: 'register'
+}
+
 /**
  * This method gets user object from local storage and return Authorization header.
  * @returns {{Authorization: string}|{}}
@@ -54,10 +59,11 @@ export function register(username, password, retypedPassword, firstName, lastNam
     return fetch('http://localhost:5000/api/users', requestOpts)
         .then(resp => {
             if(!resp.ok) {
-                return;
+                const error = (resp && resp.message) || resp.statusText;
+                return Promise.reject(error);
             }
 
-            return resp.status
+            return resp;
         });
 }
 
