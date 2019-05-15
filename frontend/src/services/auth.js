@@ -25,7 +25,7 @@ export function login(username, password) {
         body: JSON.stringify({username, password})
     };
 
-    return fetch('http://localhost:5000/users/authenticate', requestOpts)
+    return fetch('http://localhost:5000/api/authenticate', requestOpts)
         .then(handleResponse)
         .then(user => {
 
@@ -38,6 +38,27 @@ export function login(username, password) {
 
             return user;
         })
+}
+
+export function register(username, password, retypedPassword, firstName, lastName) {
+    if(password !== retypedPassword) {
+        return;
+    }
+
+    const requestOpts = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({username, password, firstName, lastName})
+    }
+
+    return fetch('http://localhost:5000/api/users', requestOpts)
+        .then(resp => {
+            if(!resp.ok) {
+                return;
+            }
+
+            return resp.status
+        });
 }
 
 /**
@@ -69,7 +90,7 @@ function handleResponse(response) {
         if(!response.ok) {
             if (response.status === 401) {
                 logout();
-                location.reload(true);
+                window.location.reload(true);
             }
 
             const error = (data && data.message) || response.statusText;

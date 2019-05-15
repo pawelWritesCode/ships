@@ -1,7 +1,9 @@
 import React, {Component} from 'react';
 import LoginForm from '../../components/LoginForm';
+import RegisterForm from '../../components/RegisterForm';
 import {Link} from "react-router-dom";
 import { Button } from 'reactstrap';
+import { login } from '../../services/auth';
 
 const authenticationStates = {
     login: 'login',
@@ -45,7 +47,7 @@ class Authentication extends Component {
                 return <LoginForm/>
             }
             case authenticationStates.register: {
-                return <div>Register form</div>
+                return <RegisterForm/>
             }
             default: {
                 return <LoginForm/>
