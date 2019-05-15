@@ -15,17 +15,16 @@ class LoginForm extends Component {
      * This method attempt to login user from
      * @param e
      */
-    attemptLogin(e) {
+    async attemptLogin(e) {
         e.preventDefault();
         const clickedElement = e.target;
         const form = clickedElement.closest('form');
         const loginInput = form.querySelector('.loginForm-login');
         const passInput = form.querySelector('.loginForm-password');
-        const user = login(loginInput.value, passInput.value);
+        const user = await login(loginInput.value, passInput.value);
 
         if(user) {
-            console.log('zalogowany');
-            //Redirect to dashboard
+            window.location.replace('/');
         }
     }
 

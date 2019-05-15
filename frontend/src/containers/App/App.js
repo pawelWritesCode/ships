@@ -2,6 +2,7 @@ import React from 'react';
 import { BrowserRouter as Router, Route, Switch} from 'react-router-dom';
 
 import { PrivateRoute }  from '../../components/PrivateRoute/PrivateRoute';
+import Dashboard from '../../components/Dashboard';
 import Authentication from "../Authentication";
 
 function App() {
@@ -9,7 +10,8 @@ function App() {
       <div>
           <Router>
               <Switch>
-                  <Route exact path="/" component={Authentication} />
+                  <PrivateRoute exact path="/" component={Dashboard} />
+                  <Route exact path="/authentication" component={Authentication} />
               </Switch>
           </Router>
       </div>
