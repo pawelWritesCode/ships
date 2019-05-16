@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import ButtonMainSection from "../../components/ButtonMainSection";
 
 const Dashboard = (props) => {
 
@@ -9,7 +10,7 @@ const Dashboard = (props) => {
 
                 </div>
                 <div className="dashboard-main-button-section">
-
+                    <ButtonMainSection/>
                 </div>
             </div>
         </div>

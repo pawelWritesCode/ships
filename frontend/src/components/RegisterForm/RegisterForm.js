@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {Button, Form, FormGroup, Input, Label} from "reactstrap";
-import {register, authenticationStates} from '../../services/auth'
+import { register } from '../../services/auth';
+import { authenticationStates } from '../../helpers/states';
 
 const RegisterForm = (props) => {
     const attemptRegister = async (e) => {

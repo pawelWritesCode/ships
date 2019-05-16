@@ -1,7 +1,4 @@
-export const authenticationStates = {
-    login: 'login',
-    register: 'register'
-}
+
 
 /**
  * This method gets user object from local storage and return Authorization header.
