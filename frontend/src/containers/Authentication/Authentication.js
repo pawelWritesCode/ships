@@ -3,7 +3,8 @@ import LoginForm from '../../components/LoginForm';
 import RegisterForm from '../../components/RegisterForm';
 import {Link} from "react-router-dom";
 import { Button } from 'reactstrap';
-import { login, authenticationStates } from '../../services/auth';
+import { login } from '../../services/auth';
+import { authenticationStates } from "../../helpers/states";
 
 class Authentication extends Component {
     constructor(props) {
