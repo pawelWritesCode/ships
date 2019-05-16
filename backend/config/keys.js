@@ -3,8 +3,8 @@
 const env = 'dev';
 
 if(env === 'dev') {
-    module.exports = require('./dev');
+    module.exports = require('./dev.json');;
 }
 else {
-    module.exports = require('./prod');
+    module.exports = require('./prod.json');
 }
