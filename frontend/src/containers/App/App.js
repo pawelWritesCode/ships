@@ -6,7 +6,7 @@ import '../../styles.css';
 import 'react-notifications/lib/notifications.css';
 
 import { PrivateRoute }  from '../../components/PrivateRoute/PrivateRoute';
-import Dashboard from '../../components/Dashboard';
+import Dashboard from '../Dashboard';
 import Authentication from "../Authentication";
 
 const App = (props) => {
