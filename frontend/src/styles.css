@@ -18,14 +18,14 @@
     align-items: center;
 }
 
-.dashboard-room-list {
+.dashboard-main-view {
     height: 90%;
     width: 60%;
 
     border: 1px solid black;
 }
 
-.dashboard-main-button-section {
+.dashboard-button-section {
     height: 90%;
     width: 30%;
 

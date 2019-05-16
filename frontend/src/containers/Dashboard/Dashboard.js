@@ -1,16 +1,16 @@
 import React, {Component} from 'react';
-import ButtonMainSection from "../../components/ButtonMainSection";
+import ButtonSection from "../../components/ButtonSection";
 
 const Dashboard = (props) => {
 
     return (
         <div className="dashboard-container">
             <div className="dashboard">
-                <div className="dashboard-room-list">
+                <div className="dashboard-main-view">
 
                 </div>
-                <div className="dashboard-main-button-section">
-                    <ButtonMainSection/>
+                <div className="dashboard-button-section">
+                    <ButtonSection/>
                 </div>
             </div>
         </div>

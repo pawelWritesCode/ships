@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import { Button } from 'reactstrap';
 import { appState } from "../../helpers/states";
 
-class ButtonMainSection extends Component {
+class ButtonSection extends Component {
     constructor(props) {
         super(props);
 
@@ -45,4 +45,4 @@ class ButtonMainSection extends Component {
     }
 }
 
-export default ButtonMainSection
+export default ButtonSection
