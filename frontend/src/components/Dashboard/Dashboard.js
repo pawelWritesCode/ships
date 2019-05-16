@@ -3,22 +3,14 @@ import React, {Component} from 'react';
 const Dashboard = (props) => {
 
     return (
-        <div className="row">
-            <div className="col-md-2">
+        <div className="dashboard-container">
+            <div className="dashboard">
+                <div className="dashboard-room-list">
 
-            </div>
-            <div className="col-md-8">
-                <div className="row">
-                    <div className="col-md-8">
-                        ActiveRoomList
-                    </div>
-                    <div className="col-md-4">
-                        MainButtonSection
-                    </div>
                 </div>
-            </div>
-            <div className="col-md-2">
+                <div className="dashboard-main-button-section">
 
+                </div>
             </div>
         </div>
     )

@@ -1,6 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Switch} from 'react-router-dom';
 import { NotificationContainer } from 'react-notifications';
+import '../../styles.css';
 
 import 'react-notifications/lib/notifications.css';
 
