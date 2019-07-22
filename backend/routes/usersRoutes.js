@@ -10,7 +10,8 @@ module.exports = (app) => {
     app.post('/api/users', (req, res, next) => {
         userService.create(req.body)
             .then(user => {
-                res.json({message: 'User was successfuly created!'});
+                const {username, firstName, lastName, ...rest} = user;
+                res.json({username, firstName, lastName});
             })
             .catch(err =>  res.status(403).json({message: 'Coundn\'t create user!'}));
     });

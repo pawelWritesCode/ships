@@ -1,0 +1,24 @@
+{
+  "title": "Request User",
+  "description": "Create new user",
+  "type": "object",
+  "properties": {
+    "username": {
+      "description": "User login",
+      "type": "string"
+    },
+    "password": {
+      "description": "User password",
+      "type": "string"
+    },
+    "firstName": {
+      "description": "User first name",
+      "type": "string"
+    },
+    "lastName": {
+      "description": "User last name",
+      "type": "string"
+    }
+  },
+  "required": [ "username", "password", "firstName", "lastName" ]
+}

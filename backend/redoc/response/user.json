@@ -1,6 +1,6 @@
 {
-  "title": "Response Authorize",
-  "description": "Authorization",
+  "title": "Response User",
+  "description": "Create new user",
   "type": "object",
   "properties": {
     "firstName": {
