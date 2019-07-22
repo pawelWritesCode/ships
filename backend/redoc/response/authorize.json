@@ -1,0 +1,20 @@
+{
+  "title": "Response Authorize",
+  "description": "Authorization",
+  "type": "object",
+  "properties": {
+    "firstName": {
+      "description": "User's first name",
+      "type": "string"
+    },
+    "lastName": {
+      "description": "User's last name",
+      "type": "string"
+    },
+    "username": {
+      "description": "User's username",
+      "type": "string"
+    }
+  },
+  "required": [ "firstName", "lastName", "username" ]
+}

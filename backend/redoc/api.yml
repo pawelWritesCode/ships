@@ -1,0 +1,83 @@
+openapi: 3.0.0
+info:
+    description: "SHIPS API"
+    version: 0.1.0
+    title: "SHIPS API"
+    contact:
+        email: p.t.chmielewski@gmail.com
+tags:
+    -   name: authorize
+        description: Autoryzacja
+    -   name: users
+        description: Użytkownicy
+x-tagGroups:
+    -   name: Autoryzacja
+        tags:
+            - authorize
+    -   name: Użytkownicy
+        tags:
+            - users
+components:
+    securitySchemes:
+        basicAuth:
+            type: http
+            scheme: basic
+paths:
+    /api/authorize:
+        post:
+            description: ""
+            summary: "Autoryzacja w systemie."
+            operationId: post_authorize
+            tags:
+                - authorize
+            responses:
+                200:
+                    description: Success
+                    content:
+                        application/json:
+                            schema:
+                                $ref: response/authorize.json
+                400:
+                    description: Login error / incorrect credentials
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: request/authorize.json
+                required: true
+    /api/users:
+        get:
+            description: "List of all users"
+            summary: "List of all users"
+            tags:
+                - users
+            responses:
+                200:
+                    description: Success
+                    content:
+                        application/json:
+                            schema:
+                                $ref: response/users_array.json
+                    required: true
+            security:
+                -   basicAuth: []
+        post:
+            description: "Create new user"
+            summary: "Create new user"
+            tags:
+                -   users
+            responses:
+                200:
+                    description: Success
+                    content:
+                        application/json:
+                            schema:
+                                $ref: response/user.json
+                    required: true
+                403:
+                    description: "Could not create user"
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: request/user.json

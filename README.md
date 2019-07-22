@@ -16,3 +16,9 @@ Next move to config dir and fulfill dev.js config file.
     cd backend
     yarn dev
 ```
+
+### API-doc
+```bash
+    cd backend
+    yarn api
+```

@@ -1,0 +1,16 @@
+{
+  "title": "Request Authorize",
+  "description": "Authorization",
+  "type": "object",
+  "properties": {
+    "username": {
+      "description": "User login",
+      "type": "string"
+    },
+    "password": {
+      "description": "User password",
+      "type": "string"
+    }
+  },
+  "required": [ "username", "password" ]
+}
