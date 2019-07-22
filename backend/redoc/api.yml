@@ -1,0 +1,1798 @@
+openapi: 3.0.0
+info:
+    description: "SHIPS API"
+    version: 0.1.0
+    title: "SHIPS API"
+    contact:
+        email: p.t.chmielewski@gmail.com
+#servers:
+#    -   url: "https://app.aiqa.net"
+#        description: "Serwer produkcyjny"
+#    -   url: "https://http://dev.aiqa.e1s.it"
+#        description: "Serwer developerski"
+#    -   url: "https://app.aiqa.lh"
+#        description: "Środowisko lokalne"
+tags:
+    -   name: authorize
+        description: Autoryzacja
+x-tagGroups:
+    -   name: Autoryzacja
+        tags:
+            - authorize
+components:
+    securitySchemes:
+        basicAuth:
+            type: http
+            scheme: basic
+paths:
+    /api/authorize:
+        post:
+            description: ""
+            summary: "Autoryzacja w systemie."
+            operationId: post_authorize
+            tags:
+                - authorize
+            responses:
+                200:
+                    description: Sukces.
+                    content:
+                        application/json:
+                            schema:
+                                $ref: response/authorize.json
+                400:
+                    description: Błąd logowania
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: request/authorize.json
+                required: true
+#    /api/authorize/logout:
+#        get:
+#            description: ""
+#            summary: "Wylogowanie z systemu."
+#            operationId: get_authorize_logout
+#            tags:
+#                - authorize
+#                - logout
+#            responses:
+#                200:
+#                    description: Sukces.
+#                403:
+#                    description: Niepoprawny Bearer token.
+#            security:
+#                -   bearerAuth: []
+#    /api/authorize/register:
+#        post:
+#            description: ""
+#            summary: "Rejestracja w systemie."
+#            operationId: post_authorize_register
+#            tags:
+#                - authorize
+#                - register
+#            responses:
+#                201:
+#                    description: "Poprawne utworzenie rekordu."
+#                    content:
+#                        application/json:
+#                            schema:
+#                                $ref: redoc/response/user.json
+#                400:
+#                    description: Niepoprawne request body
+#                501:
+#                    description: Rejestracja tymczasowo zablokowana.
+#            requestBody:
+#                content:
+#                    application/json:
+#                        schema:
+#                            $ref: redoc/request/authorize_register.json
+#                required: true
+#    /api/authorize/user:
+#        get:
+#            description: ""
+#            summary: "Aktualnie zalogowany user"
+#            operationId: get_user
+#            tags:
+#                - authorize
+#            responses:
+#                200:
+#                    description: Poprawne pobranie aktualnie zalogowanego usera
+#                    content:
+#                        application/json:
+#                            schema:
+#                                $ref: redoc/response/user.json
+#    /api/authorize/reset:
+#        post:
+#            description: ""
+#            summary: "Prośba o wysłanie emaila z formularzem zmiany hasła w systemie."
+#            operationId: post_authorize_reset_send_email
+#            tags:
+#                - authorize
+#            responses:
+#                200:
+#                    description: "Poprawne zapytanie o email."
+#                403:
+#                    description: Błąd zmiany hasła
+#            requestBody:
+#                content:
+#                    application/json:
+#                        schema:
+#                            $ref: redoc/request/authorize_reset_send_email.json
+#                required: true
+#    /api/authorize/reset/{resetToken}:
+#        parameters:
+#            -   name: resetToken
+#                in: path
+#                description: "Token do resetu hasła."
+#                required: true
+#                schema:
+#                    type: string
+#        post:
+#            description: ""
+#            summary: "Reset hasła w systemie."
+#            operationId: post_authorize_reset
+#            tags:
+#                - authorize
+#            responses:
+#                200:
+#                    description: "Poprawna zmiana hasła."
+#                    content:
+#                        application/json:
+#                            schema:
+#                                $ref: redoc/response/user.json
+#                400:
+#                    description: Błąd zmiany hasła / hasło nie jest prawidłowe
+#            requestBody:
+#                content:
+#                    application/json:
+#                        schema:
+#                            $ref: redoc/request/authorize_reset_password.json
+#                required: true
+#    /api/project:
+#        get:
+#            description: ""
+#            summary: "Lista projektów."
+#            operationId: get_project
+#            tags:
+#                - project
+#            responses:
+#                200:
+#                    description: Sukces.
+#                    content:
+#                        application/json:
+#                            schema:
+#                                $ref: redoc/response/project_array.json
+#            security:
+#                -   bearerAuth: []
+#        post:
+#            description: ""
+#            summary: "Tworzenie nowego projektu."
+#            operationId: post_project
+#            tags:
+#                - project
+#            responses:
+#                201:
+#                    description: Poprawne utworzenie nowego projektu.
+#                    content:
+#                        application/json:
+#                            schema:
+#                                $ref: redoc/response/project.json
+#                400:
+#                    description: Niepoprawne request body.
+#            requestBody:
+#                content:
+#                    application/json:
+#                        schema:
+#                            $ref: redoc/request/project.json
+#                required: true
+#            security:
+#                -   bearerAuth: []
+#    /api/project/{projectId}:
+#        parameters:
+#            -   name: projectId
+#                in: path
+#                description: "Parametr id projektu."
+#                required: true
+#                schema:
+#                    type: integer
+#                    format: int64
+#        get:
+#            description: ""
+#            summary: "Pobranie pojedyńczego projektu."
+#            operationId: get_project_id
+#            tags:
+#                - project
+#            responses:
+#                200:
+#                    description: Poprawne pobranie pojedyńczego projektu.
+#                    content:
+#                        application/json:
+#                            schema:
+#                                $ref: redoc/response/project.json
+#                403:
+#                    description: Brak uprawnień do projektu.
+#            security:
+#                -   bearerAuth: []
+#        put:
+#            description: ""
+#            summary: "Edycja istniejącego projektu."
+#            operationId: put_project_id
+#            tags:
+#                - project
+#            responses:
+#                200:
+#                    description: Poprawna edycja istniejącego projektu.
+#                    content:
+#                        application/json:
+#                            schema:
+#                                $ref: redoc/response/project.json
+#                400:
+#                    description: Niepoprawne request body.
+#                403:
+#                    description: Brak uprawnień do projektu.
+#            requestBody:
+#                content:
+#                    application/json:
+#                        schema:
+#                            $ref: redoc/request/project.json
+#                required: true
+#            security:
+#                -   bearerAuth: []
+#        delete:
+#            description: ""
+#            summary: "Usunięcie istniejącego projektu."
+#            operationId: delete_project_id
+#            tags:
+#                - project
+#            responses:
+#                204:
+#                    description: Poprawne usunięcie istniejącego projektu.
+#                403:
+#                    description: Brak uprawnień do projektu.
+#            security:
+#                -   bearerAuth: []
+#    /api/project/{projectId}/createModel:
+#        parameters:
+#            -   name: projectId
+#                in: path
+#                description: "Parametr id projektu."
+#                required: true
+#                schema:
+#                    type: integer
+#                    format: int64
+#        get:
+#            description: ""
+#            summary: "Stworzenie nauczonego modelu ML."
+#            operationId: create_ml_model
+#            tags:
+#                - project
+#            responses:
+#                200:
+#                    description: Poprawne stworzenie modelu.
+#                400:
+#                    description: Błąd.
+#            security:
+#                -   bearerAuth: []
+#    /api/debug/version:
+#        get:
+#            description: ""
+#            summary: "Aktualna wersja projektu"
+#            operationId: get_version
+#            tags:
+#                - version
+#            responses:
+#                200:
+#                    description: Poprawne pobranie aktualnej wersji projektu
+#                    content:
+#                        application/json:
+#                            schema:
+#                                $ref: redoc/response/version.json
+#    /api/project/{projectId}/token:
+#        parameters:
+#            -   name: projectId
+#                in: path
+#                description: "Parametr id projektu."
+#                required: true
+#                schema:
+#                    type: integer
+#                    format: int64
+#        get:
+#            description: ""
+#            summary: "Lista project tokenów."
+#            operationId: get_projectToken
+#            tags:
+#                - token
+#            responses:
+#                200:
+#                    description: Sukces.
+#                    content:
+#                        application/json:
+#                            schema:
+#                                $ref: redoc/response/projectToken_array.json
+#            security:
+#                -   bearerAuth: []
+#        post:
+#            description: ""
+#            summary: "Tworzenie nowego project tokenu."
+#            operationId: post_projectToken
+#            tags:
+#                - token
+#            responses:
+#                201:
+#                    description: Poprawne utworzenie nowego project tokenu.
+#                    content:
+#                        application/json:
+#                            schema:
+#                                $ref: redoc/response/projectToken.json
+#                400:
+#                    description: Niepoprawne request body
+#                403:
+#                    description: Brak uprawnień do projektu.
+#            requestBody:
+#                content:
+#                    application/json:
+#                        schema:
+#                            $ref: redoc/request/projectToken.json
+#                required: true
+#            security:
+#                -   bearerAuth: []
+#    /api/project/{projectId}/token/{tokenId}:
+#        parameters:
+#            -   name: projectId
+#                in: path
+#                description: "Parametr id projektu."
+#                required: true
+#                schema:
+#                    type: integer
+#                    format: int64
+#            -   name: tokenId
+#                in: path
+#                description: "Parametr id project tokenu."
+#                required: true
+#                schema:
+#                    type: integer
+#                    format: int64
+#        get:
+#            description: ""
+#            summary: "Pobranie pojedyńczego project tokenu."
+#            operationId: get_projectToken_id
+#            tags:
+#                - token
+#            responses:
+#                200:
+#                    description: Poprawne pobranie pojedyńczego project tokenu.
+#                    content:
+#                        application/json:
+#                            schema:
+#                                $ref: redoc/response/projectToken.json
+#                403:
+#                    description: Brak uprawnień do projektu.
+#            security:
+#                -   bearerAuth: []
+#        put:
+#            description: ""
+#            summary: "Edycja istniejącego project tokenu."
+#            operationId: put_projectToken_id
+#            tags:
+#                - token
+#            responses:
+#                200:
+#                    description: Poprawna edycja istniejącego project tokenu.
+#                    content:
+#                        application/json:
+#                            schema:
+#                                $ref: redoc/response/projectToken.json
+#                400:
+#                    description: Niepoprawne request body.
+#                403:
+#                    description: Brak uprawnień do projektu.
+#            requestBody:
+#                content:
+#                    application/json:
+#                        schema:
+#                            $ref: redoc/request/projectToken.json
+#                required: true
+#            security:
+#                -   bearerAuth: []
+#        delete:
+#            description: ""
+#            summary: "Usunięcie istniejącego project tokenu."
+#            operationId: delete_projectToken_id
+#            tags:
+#                - token
+#            responses:
+#                204:
+#                    description: Poprawne usunięcie istniejącego project tokenu.
+#                403:
+#                    description: Brak uprawnień do projektu.
+#            security:
+#                -   bearerAuth: []
+#    /api/project/{projectId}/build/{buildId}/testsToRun:
+#        parameters:
+#            -   in: query
+#                name: full-set
+#                description: Return all tests
+#                required: false
+#                example: true
+#                schema:
+#                    type: boolean
+#            -   name: projectId
+#                in: path
+#                description: "Parametr id projektu."
+#                required: true
+#                schema:
+#                    type: integer
+#                    format: int64
+#            -   name: buildId
+#                in: path
+#                description: "Parametr id buildu."
+#                required: true
+#                schema:
+#                    type: integer
+#                    format: int64
+#        get:
+#            description: ""
+#            summary: "Lista testów."
+#            operationId: get_tests
+#            tags:
+#                - build
+#            responses:
+#                200:
+#                    description: Sukces.
+#                    content:
+#                        application/json:
+#                            schema:
+#                                $ref: redoc/response/tc_array.json
+#            security:
+#                -   bearerAuth: []
+#    /api/project/{projectId}/build:
+#        parameters:
+#            -   name: projectId
+#                in: path
+#                description: "Parametr id projektu."
+#                required: true
+#                schema:
+#                    type: integer
+#                    format: int64
+#        get:
+#            description: ""
+#            summary: "Lista buildów."
+#            operationId: get_build
+#            tags:
+#                - build
+#            responses:
+#                200:
+#                    description: Sukces.
+#                    content:
+#                        application/json:
+#                            schema:
+#                                $ref: redoc/response/build_array.json
+#                403:
+#                    description: Brak uprawnień do projektu.
+#            security:
+#                -   bearerAuth: []
+#        post:
+#            description: ""
+#            summary: "Tworzenie nowego buildu."
+#            operationId: post_build
+#            tags:
+#                - build
+#            responses:
+#                201:
+#                    description: Poprawne utworzenie nowego buildu.
+#                    content:
+#                        application/json:
+#                            schema:
+#                                $ref: redoc/response/build.json
+#                400:
+#                    description: Niepoprawne request body.
+#                403:
+#                    description: Brak uprawnień do projektu lub niepoprawny token.
+#            requestBody:
+#                content:
+#                    application/json:
+#                        schema:
+#                            $ref: redoc/request/build.json
+#                required: true
+#            security:
+#                -   bearerAuth: []
+#    /api/project/{projectId}/testsToRun:
+#        parameters:
+#            -   name: projectId
+#                in: path
+#                description: "Parametr id projektu."
+#                required: true
+#                schema:
+#                    type: integer
+#                    format: int64
+#        get:
+#            description: ""
+#            summary: "Lista testów dla danego projektu."
+#            operationId: get_tests_to_run
+#            tags:
+#                - tc
+#            responses:
+#                200:
+#                    description: Sukces.
+#                    content:
+#                        application/json:
+#                            schema:
+#                                $ref: redoc/response/tc_array.json
+#            security:
+#                -   bearerAuth: []
+#    /api/project/{projectId}/build/{buildId}:
+#        parameters:
+#            -   name: projectId
+#                in: path
+#                description: "Parametr id projektu."
+#                required: true
+#                schema:
+#                    type: integer
+#                    format: int64
+#            -   name: buildId
+#                in: path
+#                description: "Parametr id buildu."
+#                required: true
+#                schema:
+#                    type: integer
+#                    format: int64
+#        get:
+#            description: ""
+#            summary: "Pobranie pojedyńczego buildu."
+#            operationId: get_build_id
+#            tags:
+#                - build
+#            responses:
+#                200:
+#                    description: Poprawne pobranie pojedyńczego buildu.
+#                    content:
+#                        application/json:
+#                            schema:
+#                                $ref: redoc/response/build.json
+#                403:
+#                    description: Brak uprawnień do projektu.
+#            security:
+#                -   bearerAuth: []
+#        put:
+#            description: ""
+#            summary: "Edycja istniejącego buildu."
+#            operationId: put_build_id
+#            tags:
+#                - build
+#            responses:
+#                200:
+#                    description: Poprawna edycja istniejącego buildu.
+#                    content:
+#                        application/json:
+#                            schema:
+#                                $ref: redoc/response/build.json
+#                400:
+#                    description: Niepoprawne request body.
+#                403:
+#                    description: Brak uprawnień do projektu lub niepoprawny token.
+#            requestBody:
+#                content:
+#                    application/json:
+#                        schema:
+#                            $ref: redoc/request/build.json
+#                required: true
+#            security:
+#                -   bearerAuth: []
+#        delete:
+#            description: ""
+#            summary: "Usunięcie istniejącego buildu."
+#            operationId: delete_build_id
+#            tags:
+#                - build
+#            responses:
+#                204:
+#                    description: Poprawne usunięcie istniejącego buildu.
+#                403:
+#                    description: Brak uprawnień do projektu.
+#            security:
+#                -   bearerAuth: []
+#    /api/user/{userId}:
+#        parameters:
+#            -   name: userId
+#                in: path
+#                description: "Parametr id usera."
+#                required: true
+#                schema:
+#                    type: integer
+#                    format: int64
+#        put:
+#            description: ""
+#            summary: "Edycja istniejącego usera."
+#            operationId: put_user_id
+#            tags:
+#                - user
+#            responses:
+#                200:
+#                    description: Poprawna edycja istniejącego usera.
+#                    content:
+#                        application/json:
+#                            schema:
+#                                $ref: redoc/response/user.json
+#                400:
+#                    description: Niepoprawne request body.
+#                403:
+#                    description: Brak uprawnień do profilu.
+#            requestBody:
+#                content:
+#                    application/json:
+#                        schema:
+#                            $ref: redoc/request/user.json
+#                required: true
+#            security:
+#                -   bearerAuth: []
+#        delete:
+#            description: ""
+#            summary: "Usunięcie istniejącego usera."
+#            operationId: delete_user_id
+#            tags:
+#                - user
+#            responses:
+#                204:
+#                    description: Poprawne usunięcie istniejącego usera.
+#                400:
+#                    description: Brak możliwości usunięcia konta super usera
+#                403:
+#                    description: Brak uprawnień do usuwania userów.
+#            security:
+#                -   bearerAuth: []
+#    /api/user:
+#        get:
+#            description: ""
+#            summary: "Lista userow."
+#            operationId: get_users_list
+#            tags:
+#                - user
+#            responses:
+#                200:
+#                    description: Sukces.
+#                    content:
+#                        application/json:
+#                            schema:
+#                                $ref: redoc/response/user_array.json
+#    /api/project/{projectId}/build/{buildId}/src:
+#        parameters:
+#            -   name: projectId
+#                in: path
+#                description: "Parametr id projektu."
+#                required: true
+#                schema:
+#                    type: integer
+#                    format: int64
+#            -   name: buildId
+#                in: path
+#                description: "Parametr id buildu."
+#                required: true
+#                schema:
+#                    type: integer
+#                    format: int64
+#        get:
+#            description: ""
+#            summary: "Lista src"
+#            operationId: get_src
+#            tags:
+#                - src
+#            responses:
+#                200:
+#                    description: Sukces.
+#                    content:
+#                        application/json:
+#                            schema:
+#                                $ref: redoc/response/src_array.json
+#                403:
+#                    description: Brak uprawnień do projektu.
+#            security:
+#                -   bearerAuth: []
+#        post:
+#            description: ""
+#            summary: "Tworzenie nowych rekordów src."
+#            operationId: post_src
+#            tags:
+#                - src
+#            responses:
+#                201:
+#                    description: Poprawne utworzenie  nowych rekordów src.
+#                    content:
+#                        application/json:
+#                            schema:
+#                                $ref: redoc/response/src_array.json
+#                400:
+#                    description: Niepoprawne request body.
+#                403:
+#                    description: Brak uprawnień do projektu lub niepoprawny token.
+#            requestBody:
+#                content:
+#                    application/json:
+#                        schema:
+#                            $ref: redoc/request/src_array.json
+#                required: true
+#            security:
+#                -   bearerAuth: []
+#    /api/project/{projectId}/build/{buildId}/src/{srcId}:
+#        parameters:
+#            -   name: projectId
+#                in: path
+#                description: "Parametr id projektu."
+#                required: true
+#                schema:
+#                    type: integer
+#                    format: int64
+#            -   name: buildId
+#                in: path
+#                description: "Parametr id buildu."
+#                required: true
+#                schema:
+#                    type: integer
+#                    format: int64
+#            -   name: srcId
+#                in: path
+#                description: "Parametr id src."
+#                required: true
+#                schema:
+#                    type: integer
+#                    format: int64
+#        get:
+#            description: ""
+#            summary: "Pobranie pojedyńczego src."
+#            operationId: get_src_id
+#            tags:
+#                - src
+#            responses:
+#                200:
+#                    description: Poprawne pobranie pojedyńczego src.
+#                    content:
+#                        application/json:
+#                            schema:
+#                                $ref: redoc/response/src.json
+#                403:
+#                    description: Brak uprawnień do projektu lub buildu.
+#            security:
+#                -   bearerAuth: []
+#        put:
+#            description: ""
+#            summary: "Edycja istniejącego src."
+#            operationId: put_src_id
+#            tags:
+#                - src
+#            responses:
+#                200:
+#                    description: Poprawna edycja istniejącego src.
+#                    content:
+#                        application/json:
+#                            schema:
+#                                $ref: redoc/response/src.json
+#                400:
+#                    description: Niepoprawne request body.
+#                403:
+#                    description: Brak uprawnień do projektu lub niepoprawny token.
+#            requestBody:
+#                content:
+#                    application/json:
+#                        schema:
+#                            $ref: redoc/request/src.json
+#                required: true
+#            security:
+#                -   bearerAuth: []
+#        delete:
+#            description: ""
+#            summary: "Usunięcie istniejącego src."
+#            operationId: delete_src_id
+#            tags:
+#                - src
+#            responses:
+#                204:
+#                    description: Poprawne usunięcie istniejącego src.
+#                403:
+#                    description: Brak uprawnień do projektu.
+#            security:
+#                -   bearerAuth: []
+#    /api/avatar:
+#        get:
+#            description: ""
+#            summary: "Pobranie istniejącego awatara."
+#            operationId: get_avatar
+#            tags:
+#                - avatar
+#            responses:
+#                200:
+#                    description: Poprawne pobranie istniejącego awatara.
+#                    content:
+#                        application/json:
+#                            schema:
+#                                $ref: redoc/response/avatar.json
+#                204:
+#                    description: Brak awatara.
+#            security:
+#                -   bearerAuth: []
+#        post:
+#            description: ""
+#            summary: "Dodawanie nowego awataru."
+#            operationId: post_avatar
+#            tags:
+#                - avatar
+#            responses:
+#                201:
+#                    description: Poprawne dodanie nowego awatara.
+#                    content:
+#                        application/json:
+#                            schema:
+#                                $ref: redoc/response/avatar.json
+#                400:
+#                    description: Niepoprawne request body.
+#                500:
+#                    description: Nieudana próba zapisu zdjęcia.
+#            requestBody:
+#                content:
+#                    application/json:
+#                        schema:
+#                            $ref: redoc/request/avatar.json
+#                required: true
+#            security:
+#                -   bearerAuth: []
+#        put:
+#            description: ""
+#            summary: "Edycja istniejącego awataru."
+#            operationId: put_avatar
+#            tags:
+#                - avatar
+#            responses:
+#                200:
+#                    description: Poprawna edycja istniejącego awatara.
+#                    content:
+#                        application/json:
+#                            schema:
+#                                $ref: redoc/response/avatar.json
+#                400:
+#                    description: Niepoprawne request body.
+#                404:
+#                    description: Brak awatara do edycji.
+#            requestBody:
+#                content:
+#                    application/json:
+#                        schema:
+#                            $ref: redoc/request/avatar.json
+#                required: true
+#            security:
+#                -   bearerAuth: []
+#        delete:
+#            description: ""
+#            summary: "Usunięcie istniejącego awatara."
+#            operationId: delete_avatar
+#            tags:
+#                - avatar
+#            responses:
+#                204:
+#                    description: Poprawne usunięcie istniejącego awatara.
+#                404:
+#                    description: Brak awatara do usunięcia.
+#            security:
+#                -   bearerAuth: []
+#    /api/config:
+#        post:
+#            description: ""
+#            summary: "Dodawanie nowego configu."
+#            operationId: post_config
+#            tags:
+#                - config
+#            responses:
+#                201:
+#                    description: Poprawne dodanie nowego configu.
+#                    content:
+#                        application/json:
+#                            schema:
+#                                $ref: redoc/response/config.json
+#                400:
+#                    description: Niepoprawne request body.
+#            requestBody:
+#                content:
+#                    application/json:
+#                        schema:
+#                            $ref: redoc/request/config.json
+#                required: true
+#            security:
+#                -   bearerAuth: []
+#        get:
+#            description: ""
+#            summary: "Lista configów"
+#            operationId: get_config
+#            tags:
+#                - config
+#            responses:
+#                200:
+#                    description: Sukces.
+#                    content:
+#                        application/json:
+#                            schema:
+#                                $ref: redoc/response/config_array.json
+#            security:
+#                -   bearerAuth: []
+#    /api/config/{configId}:
+#        parameters:
+#            -   name: configId
+#                in: path
+#                description: "Parametr id configu."
+#                required: true
+#                schema:
+#                    type: integer
+#                    format: int64
+#        get:
+#            description: ""
+#            summary: "Pobranie pojedyńczego configu."
+#            operationId: get_config_id
+#            tags:
+#                - config
+#            responses:
+#                200:
+#                    description: Poprawne pobranie pojedyńczego configu.
+#                    content:
+#                        application/json:
+#                            schema:
+#                                $ref: redoc/response/config.json
+#            security:
+#                -   bearerAuth: []
+#        put:
+#            description: ""
+#            summary: "Edycja configów."
+#            operationId: put_config
+#            tags:
+#                - config
+#            responses:
+#                200:
+#                    description: Poprawna edycja configów.
+#                400:
+#                    description: Niepoprawne request body.
+#            requestBody:
+#                content:
+#                    application/json:
+#                        schema:
+#                            $ref: redoc/request/config.json
+#                required: true
+#            security:
+#                -   bearerAuth: []
+#        delete:
+#            description: ""
+#            summary: "Usunięcie istniejącego configu."
+#            operationId: delete_config_id
+#            tags:
+#                - config
+#            responses:
+#                204:
+#                    description: Poprawne usunięcie istniejącego configu.
+#            security:
+#                -   bearerAuth: []
+#    /api/project/{projectId}/build/{buildId}/failedTests:
+#        parameters:
+#            -   name: projectId
+#                in: path
+#                description: "Parametr id projektu."
+#                required: true
+#                schema:
+#                    type: integer
+#                    format: int64
+#            -   name: buildId
+#                in: path
+#                description: "Parametr id buildu."
+#                required: true
+#                schema:
+#                    type: integer
+#                    format: int64
+#        get:
+#            description: ""
+#            summary: "Lista nieudanych testów"
+#            operationId: get_failedTests
+#            tags:
+#                - failedTests
+#            responses:
+#                200:
+#                    description: Sukces.
+#                    content:
+#                        application/json:
+#                            schema:
+#                                $ref: redoc/response/failedTests_array.json
+#                403:
+#                    description: Brak uprawnień do projektu.
+#            security:
+#                -   bearerAuth: []
+#        post:
+#            description: ""
+#            summary: "Tworzenie nowych rekordow failedTests."
+#            operationId: post_failedTests
+#            tags:
+#                - failedTests
+#            responses:
+#                201:
+#                    description: Poprawne utworzenie nowych rekordow failedTests.
+#                    content:
+#                        application/json:
+#                            schema:
+#                                $ref: redoc/response/failedTests_array.json
+#                400:
+#                    description: Niepoprawne request body.
+#                403:
+#                    description: Brak uprawnień do projektu lub niepoprawny token.
+#            requestBody:
+#                content:
+#                    application/json:
+#                        schema:
+#                            $ref: redoc/request/failedTests_array.json
+#                required: true
+#            security:
+#                -   bearerAuth: []
+#    /api/project/{projectId}/build/{buildId}/failedTests/{failedTestsId}:
+#        parameters:
+#            -   name: projectId
+#                in: path
+#                description: "Parametr id projektu."
+#                required: true
+#                schema:
+#                    type: integer
+#                    format: int64
+#            -   name: buildId
+#                in: path
+#                description: "Parametr id buildu."
+#                required: true
+#                schema:
+#                    type: integer
+#                    format: int64
+#            -   name: failedTestsId
+#                in: path
+#                description: "Parametr id failedTests."
+#                required: true
+#                schema:
+#                    type: integer
+#                    format: int64
+#        get:
+#            description: ""
+#            summary: "Pobranie pojedyńczego rekordu failedTests."
+#            operationId: get_failedTests_id
+#            tags:
+#                - failedTests
+#            responses:
+#                200:
+#                    description: Poprawne pobranie pojedyńczego rekordu failedTests.
+#                    content:
+#                        application/json:
+#                            schema:
+#                                $ref: redoc/response/failedTests.json
+#                403:
+#                    description: Brak uprawnień do projektu lub buildu.
+#            security:
+#                -   bearerAuth: []
+#        put:
+#            description: ""
+#            summary: "Edycja istniejącego rekordu failedTests."
+#            operationId: put_failedTests_id
+#            tags:
+#                - failedTests
+#            responses:
+#                200:
+#                    description: Poprawna edycja istniejącego rekordu failedTests.
+#                    content:
+#                        application/json:
+#                            schema:
+#                                $ref: redoc/response/failedTests.json
+#                400:
+#                    description: Niepoprawne request body.
+#                403:
+#                    description: Brak uprawnień do projektu lub niepoprawny token.
+#            requestBody:
+#                content:
+#                    application/json:
+#                        schema:
+#                            $ref: redoc/request/failedTests.json
+#                required: true
+#            security:
+#                -   bearerAuth: []
+#        delete:
+#            description: ""
+#            summary: "Usunięcie istniejącego rekordu failedTests."
+#            operationId: delete_failedTests_id
+#            tags:
+#                - failedTests
+#            responses:
+#                204:
+#                    description: Poprawne usunięcie istniejącego rekordu failedTests.
+#                403:
+#                    description: Brak uprawnień do projektu.
+#            security:
+#                -   bearerAuth: []
+#    /api/project/{projectId}/build/{buildId}/failedTests/count:
+#        parameters:
+#            -   name: projectId
+#                in: path
+#                description: "Parametr id projektu."
+#                required: true
+#                schema:
+#                    type: integer
+#                    format: int64
+#            -   name: buildId
+#                in: path
+#                description: "Parametr id buildu."
+#                required: true
+#                schema:
+#                    type: integer
+#                    format: int64
+#        get:
+#            description: ""
+#            summary: "Liczba nieudanych testów per build"
+#            operationId: get_failedTests_count
+#            tags:
+#                - failedTests
+#            responses:
+#                200:
+#                    description: Sukces.
+#                403:
+#                    description: Brak uprawnień do projektu.
+#            security:
+#                -   bearerAuth: []
+#    /api/project/{projectId}/build/{buildId}/tc:
+#        parameters:
+#            -   name: projectId
+#                in: path
+#                description: "Parametr id projektu."
+#                required: true
+#                schema:
+#                    type: integer
+#                    format: int64
+#            -   name: buildId
+#                in: path
+#                description: "Parametr id buildu."
+#                required: true
+#                schema:
+#                    type: integer
+#                    format: int64
+#        get:
+#            description: ""
+#            summary: "Lista test caseów."
+#            operationId: get_tc
+#            tags:
+#                - tc
+#            responses:
+#                200:
+#                    description: Sukces.
+#                    content:
+#                        application/json:
+#                            schema:
+#                                $ref: redoc/response/tc_array.json
+#                403:
+#                    description: Brak uprawnień do projektu.
+#            security:
+#                -   bearerAuth: []
+#        post:
+#            description: ""
+#            summary: "Tworzenie nowych tc."
+#            operationId: post_tc
+#            tags:
+#                - tc
+#            responses:
+#                201:
+#                    description: Poprawne utworzenie nowych rekordów tc.
+#                    content:
+#                        application/json:
+#                            schema:
+#                                $ref: redoc/response/tc_array.json
+#                400:
+#                    description: Niepoprawne request body.
+#                403:
+#                    description: Brak uprawnień do projektu lub niepoprawny token.
+#            requestBody:
+#                content:
+#                    application/json:
+#                        schema:
+#                            $ref: redoc/request/tc_array.json
+#                required: true
+#            security:
+#                -   bearerAuth: []
+#    /api/project/{projectId}/build/{buildId}/tc/count:
+#        parameters:
+#            -   name: projectId
+#                in: path
+#                description: "Parametr id projektu."
+#                required: true
+#                schema:
+#                    type: integer
+#                    format: int64
+#            -   name: buildId
+#                in: path
+#                description: "Parametr id buildu."
+#                required: true
+#                schema:
+#                    type: integer
+#                    format: int64
+#        get:
+#            description: ""
+#            summary: "Liczba test caseów per projekt."
+#            operationId: get_tc_count
+#            tags:
+#                - tc
+#            responses:
+#                200:
+#                    description: Sukces.
+#                403:
+#                    description: Brak uprawnień do projektu.
+#            security:
+#                -   bearerAuth: []
+#    /api/project/{projectId}/build/{buildId}/tc/{tcId}:
+#        parameters:
+#            -   name: projectId
+#                in: path
+#                description: "Parametr id projektu."
+#                required: true
+#                schema:
+#                    type: integer
+#                    format: int64
+#            -   name: tcId
+#                in: path
+#                description: "Parametr id tc."
+#                required: true
+#                schema:
+#                    type: integer
+#                    format: int64
+#            -   name: buildId
+#                in: path
+#                description: "Parametr id buildu."
+#                required: true
+#                schema:
+#                    type: integer
+#                    format: int64
+#        get:
+#            description: ""
+#            summary: "Pobranie pojedyńczego tc."
+#            operationId: get_tc_id
+#            tags:
+#                - tc
+#            responses:
+#                200:
+#                    description: Poprawne pobranie pojedyńczego tc.
+#                    content:
+#                        application/json:
+#                            schema:
+#                                $ref: redoc/response/tc.json
+#                403:
+#                    description: Brak uprawnień do projektu.
+#            security:
+#                -   bearerAuth: []
+#        put:
+#            description: ""
+#            summary: "Edycja istniejącego tc."
+#            operationId: put_tc_id
+#            tags:
+#                - tc
+#            responses:
+#                200:
+#                    description: Poprawna edycja istniejącego tc.
+#                    content:
+#                        application/json:
+#                            schema:
+#                                $ref: redoc/response/tc.json
+#                400:
+#                    description: Niepoprawne request body.
+#                403:
+#                    description: Brak uprawnień do projektu lub niepoprawny token.
+#            requestBody:
+#                content:
+#                    application/json:
+#                        schema:
+#                            $ref: redoc/request/tc.json
+#                required: true
+#            security:
+#                -   bearerAuth: []
+#        delete:
+#            description: ""
+#            summary: "Usunięcie istniejącego tc."
+#            operationId: delete_tc_id
+#            tags:
+#                - tc
+#            responses:
+#                204:
+#                    description: Poprawne usunięcie istniejącego tc.
+#                403:
+#                    description: Brak uprawnień do projektu.
+#            security:
+#                -   bearerAuth: []
+#    /api/project/{projectId}/build/{buildId}/srcAll:
+#        parameters:
+#            -   name: projectId
+#                in: path
+#                description: "Parametr id projektu."
+#                required: true
+#                schema:
+#                    type: integer
+#                    format: int64
+#            -   name: buildId
+#                in: path
+#                description: "Parametr id buildu."
+#                required: true
+#                schema:
+#                    type: integer
+#                    format: int64
+#        get:
+#            description: ""
+#            summary: "Lista wszystkich plików projektu."
+#            operationId: get_srcAll
+#            tags:
+#                - srcAll
+#            responses:
+#                200:
+#                    description: Sukces.
+#                    content:
+#                        application/json:
+#                            schema:
+#                                $ref: redoc/response/srcAll_array.json
+#                403:
+#                    description: Brak uprawnień do projektu.
+#            security:
+#                -   bearerAuth: []
+#        post:
+#            description: ""
+#            summary: "Tworzenie nowych rekordów src projektu."
+#            operationId: post_srcAll
+#            tags:
+#                - srcAll
+#            responses:
+#                201:
+#                    description: Poprawne utworzenie nowych rekordów srcAll.
+#                    content:
+#                        application/json:
+#                            schema:
+#                                $ref: redoc/response/srcAll_array.json
+#                400:
+#                    description: Niepoprawne request body.
+#                403:
+#                    description: Brak uprawnień do projektu lub niepoprawny token.
+#            requestBody:
+#                content:
+#                    application/json:
+#                        schema:
+#                            $ref: redoc/request/srcAll_array.json
+#                required: true
+#            security:
+#                -   bearerAuth: []
+#    /api/project/{projectId}/build/{buildId}/srcAll/{srcAllId}:
+#        parameters:
+#            -   name: projectId
+#                in: path
+#                description: "Parametr id projektu."
+#                required: true
+#                schema:
+#                    type: integer
+#                    format: int64
+#            -   name: srcAllId
+#                in: path
+#                description: "Parametr id srcAll."
+#                required: true
+#                schema:
+#                    type: integer
+#                    format: int64
+#            -   name: buildId
+#                in: path
+#                description: "Parametr id buildu."
+#                required: true
+#                schema:
+#                    type: integer
+#                    format: int64
+#        get:
+#            description: ""
+#            summary: "Pobranie pojedyńczego src projektu."
+#            operationId: get_srcAll_id
+#            tags:
+#                - srcAll
+#            responses:
+#                200:
+#                    description: Poprawne pobranie pojedyńczego srcAll.
+#                    content:
+#                        application/json:
+#                            schema:
+#                                $ref: redoc/response/srcAll.json
+#                403:
+#                    description: Brak uprawnień do projektu.
+#            security:
+#                -   bearerAuth: []
+#        put:
+#            description: ""
+#            summary: "Edycja istniejącego srcAll."
+#            operationId: put_srcAll_id
+#            tags:
+#                - srcAll
+#            responses:
+#                200:
+#                    description: Poprawna edycja istniejącego srcAll.
+#                    content:
+#                        application/json:
+#                            schema:
+#                                $ref: redoc/response/srcAll.json
+#                400:
+#                    description: Niepoprawne request body.
+#                403:
+#                    description: Brak uprawnień do projektu lub niepoprawny token.
+#            requestBody:
+#                content:
+#                    application/json:
+#                        schema:
+#                            $ref: redoc/request/srcAll.json
+#                required: true
+#            security:
+#                -   bearerAuth: []
+#        delete:
+#            description: ""
+#            summary: "Usunięcie istniejącego srcAll."
+#            operationId: delete_srcAll_id
+#            tags:
+#                - srcAll
+#            responses:
+#                204:
+#                    description: Poprawne usunięcie istniejącego srcAll.
+#                403:
+#                    description: Brak uprawnień do projektu.
+#            security:
+#                -   bearerAuth: []
+#    /api/project/{projectId}/config:
+#        parameters:
+#            -   name: projectId
+#                in: path
+#                description: "Parametr id projektu."
+#                required: true
+#                schema:
+#                    type: integer
+#                    format: int64
+#        get:
+#            description: ""
+#            summary: "Pobranie listy configów projektu."
+#            operationId: get_project_config_list
+#            tags:
+#                - projectConfig
+#            responses:
+#                200:
+#                    description: Poprawne pobranie listy configow.
+#                    content:
+#                        application/json:
+#                            schema:
+#                                $ref: redoc/response/projectConfig_array.json
+#            security:
+#                -   bearerAuth: []
+#        put:
+#            description: ""
+#            summary: "Edycja configu projektu."
+#            operationId: put_project_config
+#            tags:
+#                - projectConfig
+#            responses:
+#                200:
+#                    description: Poprawna edycja configu projektu.
+#                400:
+#                    description: Niepoprawne request body.
+#                403:
+#                    description: Nieautoryzowana operacja
+#                404:
+#                    description: Nie znaleziono konfiguracji.
+#            requestBody:
+#                content:
+#                    application/json:
+#                        schema:
+#                            $ref: redoc/request/projectConfig.json
+#                required: true
+#            security:
+#                -   bearerAuth: []
+#        post:
+#            description: ""
+#            summary: "Dodanie nowej opcji konfiguracyjnej."
+#            operationId: post_project_config
+#            tags:
+#                - projectConfig
+#            responses:
+#                201:
+#                    description: Poprawne utworzenie nowej opcji konfiguracyjnej.
+#                    content:
+#                        application/json:
+#                            schema:
+#                                $ref: redoc/response/projectConfig.json
+#                400:
+#                    description: Niepoprawne request body.
+#                403:
+#                    description: Nieautoryzowana operacja.
+#            requestBody:
+#                content:
+#                    application/json:
+#                        schema:
+#                            $ref: redoc/request/projectConfig.json
+#                required: true
+#            security:
+#                -   bearerAuth: []
+#    /api/project/{projectId}/config/{configId}:
+#        parameters:
+#            -   name: projectId
+#                in: path
+#                description: "Parametr id projektu."
+#                required: true
+#                schema:
+#                    type: integer
+#                    format: int64
+#            -   name: configId
+#                in: path
+#                description: "Parametr id project configu."
+#                required: true
+#                schema:
+#                    type: integer
+#                    format: int64
+#        delete:
+#            description: ""
+#            summary: "Usunięcie istniejącego configu projektu."
+#            operationId: delete_project_config_id
+#            tags:
+#                - projectConfig
+#            responses:
+#                204:
+#                    description: Poprawne usunięcie istniejącego configu.
+#                403:
+#                    description: Nieautoryzowana operacja
+#            security:
+#                -   bearerAuth: []
+#    /api/project/{projectId}/build/{buildId}/predictedTests:
+#        parameters:
+#            -   name: projectId
+#                in: path
+#                description: "Parametr id projektu."
+#                required: true
+#                schema:
+#                    type: integer
+#                    format: int64
+#            -   name: buildId
+#                in: path
+#                description: "Parametr id buildu."
+#                required: true
+#                schema:
+#                    type: integer
+#                    format: int64
+#        get:
+#            description: ""
+#            summary: "Lista nieudanych testów"
+#            operationId: get_predictedTests
+#            tags:
+#                - predictedTests
+#            responses:
+#                200:
+#                    description: Sukces.
+#                    content:
+#                        application/json:
+#                            schema:
+#                                $ref: redoc/response/predictedTests_array.json
+#                403:
+#                    description: Brak uprawnień do projektu.
+#            security:
+#                -   bearerAuth: []
+#        post:
+#            description: ""
+#            summary: "Tworzenie nowych rekordow predictedTests."
+#            operationId: post_predictedTests
+#            tags:
+#                - predictedTests
+#            responses:
+#                201:
+#                    description: Poprawne utworzenie nowych rekordow predictedTests.
+#                    content:
+#                        application/json:
+#                            schema:
+#                                $ref: redoc/response/predictedTests_array.json
+#                400:
+#                    description: Niepoprawne request body.
+#                403:
+#                    description: Brak uprawnień do projektu lub niepoprawny token.
+#            requestBody:
+#                content:
+#                    application/json:
+#                        schema:
+#                            $ref: redoc/request/predictedTests_array.json
+#                required: true
+#            security:
+#                -   bearerAuth: []
+#    /api/project/{projectId}/build/{buildId}/predictedTests/{predictedTestsId}:
+#        parameters:
+#            -   name: projectId
+#                in: path
+#                description: "Parametr id projektu."
+#                required: true
+#                schema:
+#                    type: integer
+#                    format: int64
+#            -   name: buildId
+#                in: path
+#                description: "Parametr id buildu."
+#                required: true
+#                schema:
+#                    type: integer
+#                    format: int64
+#            -   name: predictedTestsId
+#                in: path
+#                description: "Parametr id predictedTests."
+#                required: true
+#                schema:
+#                    type: integer
+#                    format: int64
+#        get:
+#            description: ""
+#            summary: "Pobranie pojedyńczego rekordu predictedTests."
+#            operationId: get_predictedTests_id
+#            tags:
+#                - predictedTests
+#            responses:
+#                200:
+#                    description: Poprawne pobranie pojedyńczego rekordu predictedTests.
+#                    content:
+#                        application/json:
+#                            schema:
+#                                $ref: redoc/response/predictedTests.json
+#            security:
+#                -   bearerAuth: []
+#        put:
+#            description: ""
+#            summary: "Edycja istniejącego rekordu predictedTests."
+#            operationId: put_predictedTests_id
+#            tags:
+#                - predictedTests
+#            responses:
+#                200:
+#                    description: Poprawna edycja istniejącego rekordu predictedTests.
+#                    content:
+#                        application/json:
+#                            schema:
+#                                $ref: redoc/response/predictedTests.json
+#                400:
+#                    description: Niepoprawne request body.
+#            requestBody:
+#                content:
+#                    application/json:
+#                        schema:
+#                            $ref: redoc/request/predictedTests.json
+#                required: true
+#            security:
+#                -   bearerAuth: []
+#        delete:
+#            description: ""
+#            summary: "Usunięcie istniejącego rekordu predictedTests."
+#            operationId: delete_predictedTests_id
+#            tags:
+#                - predictedTests
+#            responses:
+#                204:
+#                    description: Poprawne usunięcie istniejącego rekordu predictedTests.
+#            security:
+#                -   bearerAuth: []
+#    /api/project/{projectId}/build/{buildId}/predictedTests/count:
+#        parameters:
+#            -   name: projectId
+#                in: path
+#                description: "Parametr id projektu."
+#                required: true
+#                schema:
+#                    type: integer
+#                    format: int64
+#            -   name: buildId
+#                in: path
+#                description: "Parametr id buildu."
+#                required: true
+#                schema:
+#                    type: integer
+#                    format: int64
+#        get:
+#            description: ""
+#            summary: "Liczba nieudanych testów per build"
+#            operationId: get_predictedTests_count
+#            tags:
+#                - predictedTests
+#            responses:
+#                200:
+#                    description: Sukces.
+#            security:
+#                -   bearerAuth: []
+#    /api/project/{projectId}/globalFileList:
+#        parameters:
+#            -   name: projectId
+#                in: path
+#                description: "Parametr id projektu."
+#                required: true
+#                schema:
+#                    type: integer
+#                    format: int64
+#        get:
+#            description: ""
+#            summary: "Globalna lista plików"
+#            operationId: get_globalFileList
+#            tags:
+#                - globalFileList
+#            responses:
+#                200:
+#                    description: Sukces.
+#                    content:
+#                        application/json:
+#                            schema:
+#                                $ref: redoc/response/globalFileList_array.json
+#            security:
+#                -   bearerAuth: []
+#        post:
+#            description: ""
+#            summary: "Tworzenie nowych rekordów globalFileList"
+#            operationId: post_globalFileList
+#            tags:
+#                - globalFileList
+#            responses:
+#                201:
+#                    description: Poprawne utworzenie nowych rekordów globalFileList.
+#                    content:
+#                        application/json:
+#                            schema:
+#                                $ref: redoc/response/globalFileList_array.json
+#            requestBody:
+#                content:
+#                    application/json:
+#                        schema:
+#                            $ref: redoc/request/globalFileList_array.json
+#                required: true
+#            security:
+#                -   bearerAuth: []
+#    /api/project/{projectId}/globalFileList/{globalFileListId}:
+#        parameters:
+#            -   name: projectId
+#                in: path
+#                description: "Parametr id projektu."
+#                required: true
+#                schema:
+#                    type: integer
+#                    format: int64
+#            -   name: globalFileListId
+#                in: path
+#                description: "Parametr id globalFileList."
+#                required: true
+#                schema:
+#                    type: integer
+#                    format: int64
+#        get:
+#            description: ""
+#            summary: "Pobranie pojedyńczego globalFileList."
+#            operationId: get_globalFileList_id
+#            tags:
+#                - globalFileList
+#            responses:
+#                200:
+#                    description: Poprawne pobranie pojedyńczego rekordu globalFileList.
+#                    content:
+#                        application/json:
+#                            schema:
+#                                $ref: redoc/response/globalFileList.json
+#            security:
+#                -   bearerAuth: []
+#        put:
+#            description: ""
+#            summary: "Edycja istniejącego rekordu globalFileList."
+#            operationId: put_globalFileList_id
+#            tags:
+#                - globalFileList
+#            responses:
+#                200:
+#                    description: Poprawna edycja istniejącego globalFileList.
+#                    content:
+#                        application/json:
+#                            schema:
+#                                $ref: redoc/response/globalFileList.json
+#            requestBody:
+#                content:
+#                    application/json:
+#                        schema:
+#                            $ref: redoc/request/globalFileList.json
+#                required: true
+#            security:
+#                -   bearerAuth: []
+#        delete:
+#            description: ""
+#            summary: "Usunięcie istniejącego rekordu globalFileList."
+#            operationId: delete_globalFileList_id
+#            tags:
+#                - globalFileList
+#            responses:
+#                204:
+#                    description: Poprawne usunięcie istniejącego rekordu globalFileList.
+#            security:
+#                -   bearerAuth: []

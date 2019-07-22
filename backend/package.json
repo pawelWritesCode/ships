@@ -6,7 +6,8 @@
   "scripts": {
     "start": "nodemon index.js",
     "dev": "concurrently \"nodemon index.js\" \"yarn --cwd ../frontend start\"",
-    "create-config": "echo { \"mongo_uri\": \"\" } > ./config/dev.json"
+    "create-config": "echo { \"mongo_uri\": \"\" } > ./config/dev.json",
+    "api": "redoc-cli serve ./redoc/api.yml"
   },
   "repository": {
     "type": "git",
@@ -28,6 +29,7 @@
     "express": "^4.16.4",
     "mongoose": "^5.5.4",
     "nodemon": "^1.18.11",
-    "npm": "^6.9.0"
+    "npm": "^6.9.0",
+    "redoc": "^2.0.0-rc.10"
   }
 }
