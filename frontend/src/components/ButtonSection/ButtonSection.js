@@ -1,10 +1,13 @@
 import React, {Component} from 'react';
 import { Button } from 'reactstrap';
 import { appState } from "../../helpers/states";
+import { logout } from "../../services/auth";
 
 class ButtonSection extends Component {
     constructor(props) {
         super(props);
+
+        this.logout = this.logout.bind(this);
 
         this.state = {
             state: appState.menu
@@ -18,7 +21,7 @@ class ButtonSection extends Component {
                     <React.Fragment>
                     <Button color="primary" size="lg">Profil </Button>
                     <Button color="primary" size="lg">Ranking </Button>
-                    <Button color="warning" size="lg">Wyloguj </Button>
+                    <Button onClick={this.logout} color="warning" size="lg">Wyloguj </Button>
                     </React.Fragment>
                 )
             }
@@ -27,11 +30,16 @@ class ButtonSection extends Component {
                     <React.Fragment>
                         <Button color="primary" size="lg">Profil </Button>
                         <Button color="primary" size="lg">Ranking </Button>
-                        <Button color="warning" size="lg">Wyloguj </Button>
+                        <Button onClick={this.logout} color="warning" size="lg">Wyloguj </Button>
                     </React.Fragment>
                 )
             }
         }
+     }
+
+     logout() {
+        logout();
+        window.location.reload();
      }
 
     render() {
