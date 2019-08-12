@@ -22,3 +22,10 @@ Next move to config dir and fulfill dev.js config file.
     cd backend
     yarn api
 ```
+
+### fixtures
+Need to create your own load-fixtures.sh script first.
+```bash
+    cd backend
+    yarn fixtures
+```
