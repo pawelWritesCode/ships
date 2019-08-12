@@ -8,3 +8,4 @@ frontend/yarn-error.log*
 frontend/npm-debug.log*
 backend/node_modules
 backend/config/dev.json
+backend/load-fixtures.sh

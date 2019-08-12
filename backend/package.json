@@ -7,7 +7,8 @@
     "start": "nodemon index.js",
     "dev": "concurrently \"nodemon index.js\" \"yarn --cwd ../frontend start\"",
     "create-config": "echo { \"mongo_uri\": \"\" } > ./config/dev.json",
-    "api": "redoc-cli serve ./redoc/api.yml"
+    "api": "redoc-cli serve ./redoc/api.yml",
+    "fixtures": "./load-fixtures.sh || echo \"\n\nVisit https://www.npmjs.com/package/node-mongodb-fixtures and create your own fixtures script! \""
   },
   "repository": {
     "type": "git",
@@ -28,6 +29,7 @@
     "cors": "^2.8.5",
     "express": "^4.16.4",
     "mongoose": "^5.5.4",
+    "node-mongodb-fixtures": "^3.0.8",
     "nodemon": "^1.18.11",
     "npm": "^6.9.0",
     "redoc": "^2.0.0-rc.10"
