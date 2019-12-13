@@ -31,7 +31,7 @@
     "mongoose": "^5.5.4",
     "node-mongodb-fixtures": "^3.0.8",
     "nodemon": "^1.18.11",
-    "npm": "^6.9.0",
+    "npm": "^6.13.4",
     "redoc": "^2.0.0-rc.10"
   }
 }
