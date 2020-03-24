@@ -10,24 +10,44 @@ class ButtonSection extends Component {
         this.logout = this.logout.bind(this);
 
         this.state = {
-            state: appState.menu
+            state: appState.idle
         }
     }
 
      buttons(state) {
-        switch (state) {
-            case appState.menu: {
+        switch (state.state) {
+            case appState.idle: {
                 return (
                     <React.Fragment>
-                    <Button color="primary" size="lg">Profil </Button>
-                    <Button color="primary" size="lg">Ranking </Button>
-                    <Button onClick={this.logout} color="warning" size="lg">Wyloguj </Button>
+                    <Button color="primary" size="lg">Nowy pokój</Button>
+                    <Button color="primary" size="lg">Profil</Button>
+                    <Button color="primary" size="lg">Ranking</Button>
+                    <Button onClick={this.logout} color="warning" size="lg">Wyloguj</Button>
+                    </React.Fragment>
+                )
+            }
+            case appState.playing: {
+                return (
+                    <React.Fragment>
+                        <Button color="primary" size="lg">Ustawienia</Button>
+                        <Button color="warning" size="lg">Zakończ gre</Button>
+                    </React.Fragment>
+                )
+            }
+            case appState.room: {
+                return (
+                    <React.Fragment>
+                        <Button color="primary" size="lg">Zacznij gre</Button>
+                        <Button color="primary" size="lg">Uczestnicy</Button>
+                        <Button color="primary" size="lg">Ustawienia</Button>
+                        <Button color="warning" size="lg">Wyjdz z pokoju</Button>
                     </React.Fragment>
                 )
             }
             default: {
                 return (
                     <React.Fragment>
+                        <Button color="primary" size="lg">Nowy pokój</Button>
                         <Button color="primary" size="lg">Profil </Button>
                         <Button color="primary" size="lg">Ranking </Button>
                         <Button onClick={this.logout} color="warning" size="lg">Wyloguj </Button>

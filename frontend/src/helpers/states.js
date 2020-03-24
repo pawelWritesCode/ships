@@ -5,6 +5,6 @@ export const authenticationStates = {
 
 export const appState = {
     playing: 'playing',
-    menu: 'menu',
-    options: 'options'
+    idle: 'idle',
+    room: 'room'
 }
