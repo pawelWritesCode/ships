@@ -8,18 +8,14 @@ class ButtonSection extends Component {
         super(props);
 
         this.logout = this.logout.bind(this);
-
-        this.state = {
-            state: appState.idle
-        }
     }
 
-     buttons(state) {
-        switch (state.state) {
+     buttons(current, changeState) {
+        switch (current) {
             case appState.idle: {
                 return (
                     <React.Fragment>
-                    <Button color="primary" size="lg">Nowy pokój</Button>
+                    <Button color="primary" size="lg" onClick={() => {changeState(appState.room)}}>Nowy pokój</Button>
                     <Button color="primary" size="lg">Profil</Button>
                     <Button color="primary" size="lg">Ranking</Button>
                     <Button onClick={this.logout} color="warning" size="lg">Wyloguj</Button>
@@ -30,27 +26,27 @@ class ButtonSection extends Component {
                 return (
                     <React.Fragment>
                         <Button color="primary" size="lg">Ustawienia</Button>
-                        <Button color="warning" size="lg">Zakończ gre</Button>
+                        <Button color="warning" size="lg" onClick={() => {changeState(appState.idle)}}>Zakończ gre</Button>
                     </React.Fragment>
                 )
             }
             case appState.room: {
                 return (
                     <React.Fragment>
-                        <Button color="primary" size="lg">Zacznij gre</Button>
+                        <Button color="primary" size="lg" onClick={() => {changeState(appState.playing)}}>Zacznij gre</Button>
                         <Button color="primary" size="lg">Uczestnicy</Button>
                         <Button color="primary" size="lg">Ustawienia</Button>
-                        <Button color="warning" size="lg">Wyjdz z pokoju</Button>
+                        <Button color="warning" size="lg" onClick={() => {changeState(appState.idle)}}>Wyjdz z pokoju</Button>
                     </React.Fragment>
                 )
             }
             default: {
                 return (
                     <React.Fragment>
-                        <Button color="primary" size="lg">Nowy pokój</Button>
-                        <Button color="primary" size="lg">Profil </Button>
-                        <Button color="primary" size="lg">Ranking </Button>
-                        <Button onClick={this.logout} color="warning" size="lg">Wyloguj </Button>
+                        <Button color="primary" size="lg" onClick={() => {changeState(appState.room)}}>Nowy pokój</Button>
+                        <Button color="primary" size="lg">Profil</Button>
+                        <Button color="primary" size="lg">Ranking</Button>
+                        <Button onClick={this.logout} color="warning" size="lg">Wyloguj</Button>
                     </React.Fragment>
                 )
             }
@@ -66,7 +62,7 @@ class ButtonSection extends Component {
         return (
             <div className="button-section-container">
                 <div className="button-section">
-                    {this.buttons(this.state)}
+                    {this.buttons(this.props.current, this.props.changeState)}
                 </div>
             </div>
         )
