@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import { Button } from 'reactstrap';
-import { appState } from "../../helpers/states";
+import { dashboardState, tabs } from "../../helpers/states";
 import { logout } from "../../services/auth";
 
 class ButtonSection extends Component {
@@ -10,42 +10,44 @@ class ButtonSection extends Component {
         this.logout = this.logout.bind(this);
     }
 
-     buttons(current, changeState) {
-        switch (current) {
-            case appState.idle: {
+     buttons(status, changeDashboardState) {
+        switch (status) {
+            case dashboardState.idle: {
                 return (
                     <React.Fragment>
-                    <Button color="primary" size="lg" onClick={() => {changeState(appState.room)}}>Nowy pokój</Button>
-                    <Button color="primary" size="lg">Profil</Button>
-                    <Button color="primary" size="lg">Ranking</Button>
+                    <Button color="primary" size="lg" onClick={() => {changeDashboardState(dashboardState.room, tabs.roomSettings)}}>Nowy pokój</Button>
+                    <Button color="primary" size="lg" onClick={() => {changeDashboardState(null, tabs.roomList)}}>Lista pokoi</Button>
+                    <Button color="primary" size="lg" onClick={() => {changeDashboardState(null, tabs.profile)}}>Profil</Button>
+                    <Button color="primary" size="lg" onClick={() => {changeDashboardState(null, tabs.ranking)}}>Ranking</Button>
                     <Button onClick={this.logout} color="warning" size="lg">Wyloguj</Button>
                     </React.Fragment>
                 )
             }
-            case appState.playing: {
+            case dashboardState.playing: {
                 return (
                     <React.Fragment>
                         <Button color="primary" size="lg">Ustawienia</Button>
-                        <Button color="warning" size="lg" onClick={() => {changeState(appState.idle)}}>Zakończ gre</Button>
+                        <Button color="warning" size="lg" onClick={() => {changeDashboardState(dashboardState.idle, tabs.roomList)}}>Zakończ gre</Button>
                     </React.Fragment>
                 )
             }
-            case appState.room: {
+            case dashboardState.room: {
                 return (
                     <React.Fragment>
-                        <Button color="primary" size="lg" onClick={() => {changeState(appState.playing)}}>Zacznij gre</Button>
-                        <Button color="primary" size="lg">Uczestnicy</Button>
-                        <Button color="primary" size="lg">Ustawienia</Button>
-                        <Button color="warning" size="lg" onClick={() => {changeState(appState.idle)}}>Wyjdz z pokoju</Button>
+                        <Button color="primary" size="lg" onClick={() => {changeDashboardState(dashboardState.playing, tabs.game)}}>Zacznij gre</Button>
+                        <Button color="primary" size="lg" onClick={() => {changeDashboardState(null, tabs.roomMembers)}}>Uczestnicy</Button>
+                        <Button color="primary" size="lg" onClick={() => {changeDashboardState(null, tabs.roomSettings)}}>Ustawienia</Button>
+                        <Button color="warning" size="lg" onClick={() => {changeDashboardState(dashboardState.idle, tabs.roomList)}}>Wyjdz z pokoju</Button>
                     </React.Fragment>
                 )
             }
             default: {
                 return (
                     <React.Fragment>
-                        <Button color="primary" size="lg" onClick={() => {changeState(appState.room)}}>Nowy pokój</Button>
-                        <Button color="primary" size="lg">Profil</Button>
-                        <Button color="primary" size="lg">Ranking</Button>
+                        <Button color="primary" size="lg" onClick={() => {changeDashboardState(dashboardState.room, tabs.roomSettings)}}>Nowy pokój</Button>
+                        <Button color="primary" size="lg" onClick={() => {changeDashboardState(null, tabs.roomList)}}>Lista pokoi</Button>
+                        <Button color="primary" size="lg" onClick={() => {changeDashboardState(null, tabs.profile)}}>Profil</Button>
+                        <Button color="primary" size="lg" onClick={() => {changeDashboardState(null, tabs.ranking)}}>Ranking</Button>
                         <Button onClick={this.logout} color="warning" size="lg">Wyloguj</Button>
                     </React.Fragment>
                 )
@@ -62,7 +64,7 @@ class ButtonSection extends Component {
         return (
             <div className="button-section-container">
                 <div className="button-section">
-                    {this.buttons(this.props.current, this.props.changeState)}
+                    {this.buttons(this.props.status, this.props.changeDashboardState)}
                 </div>
             </div>
         )
