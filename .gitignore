@@ -6,6 +6,4 @@ frontend/DS_Store
 frontend/yarn-debug.log*
 frontend/yarn-error.log*
 frontend/npm-debug.log*
-backend/node_modules
-backend/config/dev.json
-backend/load-fixtures.sh
+backend-go/.env

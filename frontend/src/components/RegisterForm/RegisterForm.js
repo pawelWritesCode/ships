@@ -22,15 +22,13 @@ const RegisterForm = (props) => {
         }
 
         const usernameInput = form.querySelector('.loginForm-username');
-        const firstNameInput = form.querySelector('.loginForm-first-name');
-        const lastNameInput = form.querySelector('.loginForm-last-name');
         const passwordInput = form.querySelector('.loginForm-password');
         const retypedPasswordInput = form.querySelector('.loginForm-password-retype');
 
         try {
-            const response = await register(usernameInput.value, passwordInput.value, retypedPasswordInput.value, firstNameInput.value, lastNameInput.value);
+            const response = await register(usernameInput.value, passwordInput.value, retypedPasswordInput.value);
 
-            if(response.status === 200) {
+            if(response.status === 201) {
                 const responseJson = await response.json();
                 infoBox.textContent = responseJson.message + ' You can now log-in!';
 
@@ -57,23 +55,11 @@ const RegisterForm = (props) => {
         }
 
         const usernameInput = form.querySelector('.loginForm-username');
-        const firstNameInput = form.querySelector('.loginForm-first-name');
-        const lastNameInput = form.querySelector('.loginForm-last-name');
         const passwordInput = form.querySelector('.loginForm-password');
         const retypedPasswordInput = form.querySelector('.loginForm-password-retype');
 
         if(usernameInput.value.length <= 5) {
             result.errors.push('Login musi być dłuższy niż 5 znaków');
-            result.isValid = false;
-        }
-
-        if(! isNaN(firstNameInput.value)) {
-            result.errors.push('Imie nie może być liczbą');
-            result.isValid = false;
-        }
-
-        if(! isNaN(lastNameInput.value)) {
-            result.errors.push('nazwisko nie może być liczbą');
             result.isValid = false;
         }
 
@@ -98,15 +84,6 @@ const RegisterForm = (props) => {
                     <Label>Login</Label>
                     <Input type="text" name="username" className="loginForm-username" placeholder="Podaj swój login" />
                 </FormGroup>
-                <FormGroup>
-                    <Label>Imie</Label>
-                    <Input type="text" name="first_name" className="loginForm-first-name" placeholder="Podaj swoje imię" />
-                </FormGroup>
-                <FormGroup>
-                    <Label>Nazwisko</Label>
-                    <Input type="text" name="last_name" className="loginForm-last-name" placeholder="Podaj swoje nazwisko" />
-                </FormGroup>
-
                 <FormGroup>
                     <Label>Hasło</Label>
                     <Input type="password" name="password" className="loginForm-password" placeholder="Podaj hasło" />

@@ -5,10 +5,10 @@
  * @returns {{Authorization: string}|{}}
  */
 export function authHeader() {
-    let user = JSON.parse(localStorage.getItem('user'));
+    let token = JSON.parse(localStorage.getItem('token'));
 
-    if(user && user.authdata) {
-        return { Authorization: `Basic ${user.authdata}` };
+    if(token) {
+        return { Authorization: `Bearer ${token}` };
     }
 
     return {};
@@ -27,22 +27,18 @@ export function login(username, password) {
         body: JSON.stringify({username, password})
     };
 
-    return fetch('http://localhost:5000/api/authenticate', requestOpts)
+    return fetch('http://localhost:5000/auth/login', requestOpts)
         .then(handleResponse)
-        .then(user => {
-
-            //if there is user, login is successful
-            if(user) {
-                //store user details and basic auth cred. in local storage
-                user.authdata = window.btoa(`${username}:${password}`);
-                localStorage.setItem('user', JSON.stringify(user));
+        .then(data => {
+            if(data.token) {
+                localStorage.setItem('token', JSON.stringify(data.token));
             }
 
-            return user;
+            return data.token;
         })
 }
 
-export function register(username, password, retypedPassword, firstName, lastName) {
+export function register(username, password, retypedPassword) {
     if(password !== retypedPassword) {
         return;
     }
@@ -50,10 +46,10 @@ export function register(username, password, retypedPassword, firstName, lastNam
     const requestOpts = {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({username, password, firstName, lastName})
+        body: JSON.stringify({username, password})
     }
 
-    return fetch('http://localhost:5000/api/users', requestOpts)
+    return fetch('http://localhost:5000/auth/register', requestOpts)
         .then(resp => {
             if(!resp.ok) {
                 const error = (resp && resp.message) || resp.statusText;
@@ -68,7 +64,7 @@ export function register(username, password, retypedPassword, firstName, lastNam
  * This method removes from local storage user data
  */
 export function logout() {
-    localStorage.removeItem('user');
+    localStorage.removeItem('token');
 }
 
 export function getAll() {
@@ -77,12 +73,12 @@ export function getAll() {
         headers: authHeader()
     };
 
-    return fetch('http://localhost:5000/users', requestOptions)
+    return fetch('http://localhost:5000/user', requestOptions)
         .then(handleResponse);
 }
 
 /**
- * This method handle response from /users/authenticate route
+ * This method handle response from /auth/login route
  * @param response
  * @returns {*}
  */
