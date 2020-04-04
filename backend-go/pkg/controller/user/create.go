@@ -1,7 +1,6 @@
 package user
 
 import (
-	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/pawelWritesCode/ships/backend-go/pkg/model/user"
 	"net/http"
@@ -18,7 +17,6 @@ func Create(r user.Creator) gin.HandlerFunc {
 		var requestBody user.User
 
 		if err := context.ShouldBindJSON(&requestBody); err != nil {
-			fmt.Printf("error: %v", err)
 			context.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 			return
 		}

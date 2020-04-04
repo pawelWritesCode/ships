@@ -13,6 +13,10 @@ type Getter interface {
 	GetOne(id primitive.ObjectID) (User, error)
 }
 
+type Updater interface {
+	Update(u User) (User, error)
+}
+
 //UserRepo holds collection with users.
 type UserRepo struct {
 	Collection *mongo.Collection

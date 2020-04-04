@@ -35,7 +35,7 @@ func (dbc DBCredentials) GetMongoDB() *mongo.Database {
 
 	checkErr(err)
 
-	ctx, _ = context.WithTimeout(context.Background(), 2*time.Second)
+	ctx, _ = context.WithTimeout(context.Background(), 5*time.Second)
 	err = client.Ping(ctx, readpref.Primary()) //proof of successful connection.
 
 	checkErr(err)

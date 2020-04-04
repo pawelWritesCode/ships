@@ -3,20 +3,26 @@ package user
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/pawelWritesCode/ships/backend-go/pkg/model/user"
-	"go.mongodb.org/mongo-driver/bson/primitive"
 	"net/http"
 )
 
 func GetOne(r user.Getter) gin.HandlerFunc {
 	return func(context *gin.Context) {
-		id, err := primitive.ObjectIDFromHex(context.Param("user"))
+		loggedUserRaw, ok := context.Get("loggedUser")
 
-		if err != nil {
-			context.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		if ok == false {
+			context.AbortWithStatus(http.StatusInternalServerError)
 			return
 		}
 
-		fetchedUser, err := r.GetOne(id)
+		loggedUser, ok := loggedUserRaw.(user.User)
+
+		if ok == false {
+			context.AbortWithStatus(http.StatusInternalServerError)
+			return
+		}
+
+		fetchedUser, err := r.GetOne(loggedUser.ID)
 
 		if err != nil {
 			context.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
