@@ -15,5 +15,6 @@ func RouteRestAPI(r *gin.Engine, db *mongo.Database, timeout int) {
 	authorized := r.Group("/")
 	authorized.Use(middleware.Auth())
 
-	authorized.GET("/api/user/:user", user.GetOne(userRepo))
+	authorized.GET("/api/user", user.GetOne(userRepo))
+	authorized.PUT("/api/user", user.Update(userRepo))
 }

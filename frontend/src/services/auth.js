@@ -67,16 +67,6 @@ export function logout() {
     localStorage.removeItem('token');
 }
 
-export function getAll() {
-    const requestOptions = {
-        method: 'GET',
-        headers: authHeader()
-    };
-
-    return fetch('http://localhost:5000/user', requestOptions)
-        .then(handleResponse);
-}
-
 /**
  * This method handle response from /auth/login route
  * @param response

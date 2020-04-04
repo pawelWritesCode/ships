@@ -21,25 +21,29 @@ func SignIn(r *user.UserRepo) gin.HandlerFunc {
 		var creds Credentials
 		var fetchedUser user.User
 
-		// Get the JSON body and decode into credentials
 		if err := c.ShouldBindJSON(&creds); err != nil {
-			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+			c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 			return
 		}
 
 		duration := time.Duration(r.Timeout) * time.Second
 		ctx, _ := context.WithTimeout(context.Background(), duration)
-		r.Collection.FindOne(ctx, bson.M{"username": creds.Username, "password": creds.Password}).Decode(&fetchedUser)
+		err := r.Collection.FindOne(ctx, bson.M{"username": creds.Username, "password": creds.Password}).Decode(&fetchedUser)
+
+		if err != nil {
+			c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"error": "Invalid credentials"})
+			return
+		}
 
 		if fetchedUser.Password != creds.Password || fetchedUser.Username != creds.Username {
-			c.JSON(http.StatusUnauthorized, gin.H{"error": "Invalid credentials"})
+			c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"error": "Invalid credentials"})
 			return
 		}
 
 		tokenString, err := authentication.CreateJWTToken(fetchedUser)
 
 		if err != nil {
-			c.JSON(http.StatusInternalServerError, gin.H{"error": "JWT token failed"})
+			c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": "JWT token failed"})
 			return
 		}
 

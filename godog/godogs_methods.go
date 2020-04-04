@@ -73,6 +73,43 @@ func (af *ApiFeature) ISendAModifiedRequestToWithData(method, urlTemplate string
 	return af.saveLastResponseCredentials(resp)
 }
 
+func (af *ApiFeature) ISendAModifiedRequestWithTokenToWithData(method, tokenTemplated, urlTemplate string, bodyTemplate *gherkin.DocString) error {
+	client := &http.Client{}
+	reqBody, err := af.replaceTemplatedValue(bodyTemplate.Content)
+
+	if err != nil {
+		return err
+	}
+
+	url, err := af.replaceTemplatedValue(urlTemplate)
+
+	if err != nil {
+		return err
+	}
+
+	req, err := http.NewRequest(method, af.baseUrl+url, bytes.NewBuffer([]byte(reqBody)))
+
+	if err != nil {
+		return err
+	}
+
+	token, err := af.replaceTemplatedValue(tokenTemplated)
+
+	if err != nil {
+		return err
+	}
+
+	req.Header.Set("Content-Type", "application/json")
+	req.Header.Set("Authorization", "Bearer "+token)
+	resp, err := client.Do(req)
+
+	if err != nil {
+		return err
+	}
+
+	return af.saveLastResponseCredentials(resp)
+}
+
 func (af *ApiFeature) ISendAModifiedRequestWithTokenTo(method, tokenTemplated, urlTemplated string) error {
 	client := &http.Client{}
 

@@ -19,7 +19,7 @@ Feature: Get user record
 
     #--------------------------------------------------------------------------------
     # GET ONE RECORD
-    When I send a modified "GET" request with token "[user1.token]" to "/api/user/[user1.id]"
+    When I send a modified "GET" request with token "[user1.token]" to "/api/user"
     Then the response status code should be 200
     And the response should be in JSON
     And the JSON node "username" should be string of value "[user1.username]"

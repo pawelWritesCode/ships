@@ -32,6 +32,7 @@ func FeatureContext(s *godog.Suite) {
 	s.Step(`^I generate a random string "([^"]*)"$`, af.IGenerateARandomString)
 	s.Step(`^I generate a random int "([^"]*)"$`, af.IGenerateARandomInt)
 	s.Step(`^I send a modified "([^"]*)" request to "([^"]*)" with data:$`, af.ISendAModifiedRequestToWithData)
+	s.Step(`^I send a modified "([^"]*)" request with token "([^"]*)" to "([^"]*)" with data:$`, af.ISendAModifiedRequestWithTokenToWithData)
 	s.Step(`^I send a modified "([^"]*)" request to "([^"]*)"$`, af.ISendAModifiedRequestTo)
 	s.Step(`^I send a modified "([^"]*)" request with token "([^"]*)" to "([^"]*)"$`, af.ISendAModifiedRequestWithTokenTo)
 	s.Step(`^the response status code should be (\d+)$`, af.TheResponseStatusCodeShouldBe)

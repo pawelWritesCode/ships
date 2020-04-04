@@ -30,7 +30,7 @@ const RegisterForm = (props) => {
 
             if(response.status === 201) {
                 const responseJson = await response.json();
-                infoBox.textContent = responseJson.message + ' You can now log-in!';
+                infoBox.textContent = 'You can now log-in!';
 
                 setTimeout(() => {
                     props.changeType(authenticationStates.login);
