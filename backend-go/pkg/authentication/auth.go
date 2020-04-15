@@ -3,8 +3,11 @@ package authentication
 import (
 	"errors"
 	"github.com/dgrijalva/jwt-go"
+	"github.com/joho/godotenv"
 	"github.com/pawelWritesCode/ships/backend-go/pkg/model/user"
 	"go.mongodb.org/mongo-driver/bson/primitive"
+	"log"
+	"os"
 	"time"
 )
 
@@ -18,10 +21,18 @@ type Claims struct {
 	jwt.StandardClaims
 }
 
-//TODO: Move jwtKey to .env
-
 // Create the JWT key used to create the signature
-var jwtKey = []byte("asfasljfkf234234sdfsdfdsf43")
+var jwtKey []byte
+
+func init() {
+	err := godotenv.Load()
+
+	if err != nil {
+		log.Fatalf("%v", err)
+	}
+
+	jwtKey = []byte(os.Getenv("JWT_KEY"))
+}
 
 //CreateJWTToken creates JWT token from given user
 func CreateJWTToken(u user.UserInterface) (string, error) {
