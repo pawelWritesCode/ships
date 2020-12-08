@@ -1,3 +1,5 @@
+[![CircleCI](https://circleci.com/gh/pawelWritesCode/ships.svg?style=shield)](<LINK>)
+
 # Ships
 
 ## Installation:
