@@ -1,12 +1,11 @@
-package main
+package godog
 
 import (
 	"bytes"
 	"encoding/json"
 	"errors"
 	"fmt"
-	"github.com/DATA-DOG/godog/gherkin"
-	"github.com/qri-io/jsonschema"
+	"github.com/cucumber/godog"
 	"math/rand"
 	"net/http"
 	"strconv"
@@ -43,7 +42,7 @@ var ErrPreservedData = errors.New("preserved data error")
 //Argument bodyTemplate is string representing json request body from test suite.
 //
 //Response and response body will be saved and available in next steps.
-func (af *ApiFeature) ISendAModifiedRequestToWithData(method, urlTemplate string, bodyTemplate *gherkin.DocString) error {
+func (af *ApiFeature) ISendAModifiedRequestToWithData(method, urlTemplate string, bodyTemplate *godog.DocString) error {
 	client := &http.Client{}
 	reqBody, err := af.replaceTemplatedValue(bodyTemplate.Content)
 
@@ -73,7 +72,7 @@ func (af *ApiFeature) ISendAModifiedRequestToWithData(method, urlTemplate string
 	return af.saveLastResponseCredentials(resp)
 }
 
-func (af *ApiFeature) ISendAModifiedRequestWithTokenToWithData(method, tokenTemplated, urlTemplate string, bodyTemplate *gherkin.DocString) error {
+func (af *ApiFeature) ISendAModifiedRequestWithTokenToWithData(method, tokenTemplated, urlTemplate string, bodyTemplate *godog.DocString) error {
 	client := &http.Client{}
 	reqBody, err := af.replaceTemplatedValue(bodyTemplate.Content)
 
@@ -151,7 +150,7 @@ func (af *ApiFeature) ISendAModifiedRequestWithTokenTo(method, tokenTemplated, u
 //example: ISendAModifiedRequestTo("POST", "/api/city/[cityId]"),
 //This will send HTTP POST request to baseUrl/api/city/2 (assume [cityId] = 2),
 func (af *ApiFeature) ISendAModifiedRequestTo(method, url string) error {
-	return af.ISendAModifiedRequestToWithData(method, url, &gherkin.DocString{})
+	return af.ISendAModifiedRequestToWithData(method, url, &godog.DocString{})
 }
 
 //TheJSONNodeShouldBeIntegerOfValue checks if json node is integer of given value.
@@ -240,24 +239,25 @@ func (af *ApiFeature) TheResponseShouldBeInJSON() error {
 //Argument should not contain json extension: .json
 //
 //Example TheJSONShouldBeValidAccordingToSchema("response/city")
-func (af *ApiFeature) TheJSONShouldBeValidAccordingToSchema(path string) error {
-	jsonSchemaBytes, err := af.getJsonSchemaBytes(path)
-
-	if err != nil {
-		return err
-	}
-
-	rs := &jsonschema.RootSchema{}
-	if err := json.Unmarshal(jsonSchemaBytes, rs); err != nil {
-		return err
-	}
-
-	if validationErrors, _ := rs.ValidateBytes(af.lastResponseBody); len(validationErrors) > 0 {
-		return validationErrors[0]
-	}
-
-	return nil
-}
+//func (af *ApiFeature) TheJSONShouldBeValidAccordingToSchema(path string) error {
+//	jsonSchemaBytes, err := af.getJsonSchemaBytes(path)
+//
+//	if err != nil {
+//		return err
+//	}
+//
+//	//rs := &jsonschema.
+//	rs := &jsonschema.RootSchema{}
+//	if err := json.Unmarshal(jsonSchemaBytes, rs); err != nil {
+//		return err
+//	}
+//
+//	if validationErrors, _ := rs.ValidateBytes(af.lastResponseBody); len(validationErrors) > 0 {
+//		return validationErrors[0]
+//	}
+//
+//	return nil
+//}
 
 //ISaveFromTheLastResponseJSONNodeAs saves from last response json node under given variableName.
 func (af *ApiFeature) ISaveFromTheLastResponseJSONNodeAs(node, variableName string) error {
@@ -341,18 +341,18 @@ func (af *ApiFeature) ListElementWithTheIdHasFieldWithStringValue(idTemplate, fi
 }
 
 //TheJSONShouldBeValidAccordingToThisSchema validate last HTTP response against given by user schema.
-func (af *ApiFeature) TheJSONShouldBeValidAccordingToThisSchema(schema *gherkin.DocString) error {
-	rs := &jsonschema.RootSchema{}
-	if err := json.Unmarshal([]byte(schema.Content), rs); err != nil {
-		return err
-	}
-
-	if validationErrors, _ := rs.ValidateBytes(af.lastResponseBody); len(validationErrors) > 0 {
-		return validationErrors[0]
-	}
-
-	return nil
-}
+//func (af *ApiFeature) TheJSONShouldBeValidAccordingToThisSchema(schema *godog.DocString) error {
+//	rs := &jsonschema.RootSchema{}
+//	if err := json.Unmarshal([]byte(schema.Content), rs); err != nil {
+//		return err
+//	}
+//
+//	if validationErrors, _ := rs.ValidateBytes(af.lastResponseBody); len(validationErrors) > 0 {
+//		return validationErrors[0]
+//	}
+//
+//	return nil
+//}
 
 //IGenerateARandomString generates random string and save it under key
 func (af *ApiFeature) IGenerateARandomString(key string) error {
@@ -378,7 +378,7 @@ func (af *ApiFeature) TheJSONResponseShouldHaveKey(key string) error {
 	return nil
 }
 
-func (af *ApiFeature) ICreateData(data *gherkin.DocString) error {
+func (af *ApiFeature) ICreateData(data *godog.DocString) error {
 	fakeData := &Data{}
 	err := json.Unmarshal([]byte(data.Content), fakeData)
 

@@ -1,4 +1,4 @@
-package main
+package godog
 
 //random value indices that value of given key should be generated randomly
 const random = "random"
