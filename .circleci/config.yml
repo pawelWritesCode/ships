@@ -1,24 +1,141 @@
-version: 2
+version: 2.1
+
 jobs:
-  build:
-    docker:
-      - image: circleci/golang:1.15.1
-    working_directory: /go/src/github.com/{{ORG_NAME}}/{{REPO_NAME}}
-    steps:
-      - checkout
-      - run: cd backend-go && GO111MODULE=on go get -v -t -d ./...
-      - run: cd godog && GO111MODULE=on go get -v -t -d ./...
-  test:
-    docker:
-      - image: circleci/golang:1.15.1
-    working_directory: /go/src/github.com/{{ORG_NAME}}/{{REPO_NAME}}
-    steps:
-      - checkout
-      - run: cd backend-go && go test ./...
+    
+    build-backend-go:
+        docker:
+            -   image: circleci/golang:1.15.1
+        working_directory: /go/src/github.com/{{ORG_NAME}}/{{REPO_NAME}}
+        steps:
+            - checkout
+            -   restore_cache:
+                    keys:
+                        - go-mod-files-{{ checksum "backend-go/go.sum" }}
+            -   run:
+                    name: Download backend-end dependencies
+                    command: |
+                        cd backend-go
+                        GO111MODULE=on go get -v -t -d ./...
+            -   save_cache:
+                    key: go-mod-files-{{ checksum "backend-go/go.sum" }}
+                    paths:
+                        - "/go/pkg/mod"
+                            
+    build-godog-go:
+        docker:
+            -   image: circleci/golang:1.15.1
+        working_directory: /go/src/github.com/{{ORG_NAME}}/{{REPO_NAME}}
+        steps:
+            - checkout
+            -   restore_cache:
+                    keys:
+                        - go-mod-files-{{ checksum "godog/go.sum" }}
+            -   run:
+                    name: Download e2e tests dependencies
+                    command: |
+                        cd godog
+                        GO111MODULE=on go get -v -t -d ./...
+            -   save_cache:
+                    key: go-mod-files-{{ checksum "godog/go.sum" }}
+                    paths:
+                        - "/go/pkg/mod"
+
+    build-front-end:
+        docker:
+            -   image: circleci/node:14.15.1
+        steps:
+            - checkout
+            -   restore_cache:
+                    keys:
+                        - front-end-files
+            -   run:
+                    name: Download front-end dependencies
+                    command: |
+                        cd frontend
+                        yarn install
+            -   save_cache:
+                    key: front-end-files
+                    paths:
+                        - "frontend/node_modules"
+    go-unit-tests:
+        docker:
+            -   image: circleci/golang:1.15.1
+        working_directory: /go/src/github.com/{{ORG_NAME}}/{{REPO_NAME}}
+        steps:
+            - checkout
+            -   restore_cache:
+                    keys:
+                        - go-mod-files-{{ checksum "backend-go/go.sum" }}
+            -   run:
+                    name: Run backend unit tests
+                    command: |
+                        cd backend-go
+                        go test -race -cover ./...
+
+    go-e2e-tests:
+        docker:
+            -   image: circleci/golang:1.14.0
+        working_directory: /go/src/github.com/pawelWritesCode/ships
+        steps:
+            - checkout
+            -   restore_cache:
+                    keys:
+                        - go-mod-files-{{ checksum "backend-go/go.sum" }}
+                        - go-mod-files-{{ checksum "godog/go.sum" }}
+            -   run:
+                    name: Download godog binary
+                    command: |
+                        cd godog
+                        GO111MODULE=on go get github.com/cucumber/godog/cmd/godog
+            -   run:
+                    name: Turn on backend
+                    command: |
+                        cd backend-go
+                        echo " " > .env
+                        go run main.go
+                    background: true
+            -   run:
+                    name: Make e2e tests
+                    command: |
+                        cd godog
+                        sleep 10
+                        godog --version
+                        godog
+
+    build-api-doc:
+        docker:
+            -   image: circleci/node:14.15.1
+        steps:
+            - checkout
+            - run:
+                  name: Download redoc
+                  command: |
+                        cd redoc
+                        npm i redoc-cli
+            - run:
+                  name: Build api doc
+                  command: |
+                      cd redoc
+                      npx redoc-cli bundle \
+                          --title="SHIPS API" \
+                          --output=ships-rest-api.html \
+                          api.yml
 
 workflows:
-  version: 2
-  build_and_test:
-    jobs:
-      - build
-      - test
+    version: 2
+    build_and_test:
+        jobs:
+            - build-backend-go
+            - build-godog-go
+            - build-front-end
+            - go-unit-tests:
+                requires:
+                    - build-backend-go
+            - go-e2e-tests:
+                requires:
+                    - build-backend-go
+                    - build-godog-go
+            - build-api-doc:
+                requires:
+                    - go-unit-tests
+                    - go-e2e-tests
