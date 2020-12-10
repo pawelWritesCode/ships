@@ -13,9 +13,9 @@ jobs:
                         - go-mod-files-{{ checksum "backend-go/go.sum" }}
             -   run:
                     name: Download backend-end dependencies
-                    command: |
-                        cd backend-go
-                        GO111MODULE=on go get -v -t -d ./...
+                    working_directory: ./backend-go
+                    command: GO111MODULE=on go get -v -t -d ./...
+
             -   save_cache:
                     key: go-mod-files-{{ checksum "backend-go/go.sum" }}
                     paths:
@@ -32,9 +32,8 @@ jobs:
                         - go-mod-files-{{ checksum "godog/go.sum" }}
             -   run:
                     name: Download e2e tests dependencies
-                    command: |
-                        cd godog
-                        GO111MODULE=on go get -v -t -d ./...
+                    working_directory: godog
+                    command: GO111MODULE=on go get -v -t -d ./...
             -   save_cache:
                     key: go-mod-files-{{ checksum "godog/go.sum" }}
                     paths:
@@ -50,9 +49,8 @@ jobs:
                         - front-end-files
             -   run:
                     name: Download front-end dependencies
-                    command: |
-                        cd frontend
-                        yarn install
+                    working_directory: frontend
+                    command: yarn install
             -   save_cache:
                     key: front-end-files
                     paths:
@@ -68,9 +66,8 @@ jobs:
                         - go-mod-files-{{ checksum "backend-go/go.sum" }}
             -   run:
                     name: Run backend unit tests
-                    command: |
-                        cd backend-go
-                        go test -race -cover ./...
+                    working_directory: backend-go
+                    command: go test -race -cover ./...
 
     go-e2e-tests:
         docker:
@@ -84,20 +81,19 @@ jobs:
                         - go-mod-files-{{ checksum "godog/go.sum" }}
             -   run:
                     name: Download godog binary
-                    command: |
-                        cd godog
-                        GO111MODULE=on go get github.com/cucumber/godog/cmd/godog
+                    working_directory: godog
+                    command: GO111MODULE=on go get github.com/cucumber/godog/cmd/godog
             -   run:
                     name: Turn on backend
+                    working_directory: backend-go
                     command: |
-                        cd backend-go
                         echo " " > .env
                         go run main.go
                     background: true
             -   run:
                     name: Make e2e tests
+                    working_directory: godog
                     command: |
-                        cd godog
                         sleep 10
                         godog --version
                         godog
@@ -109,13 +105,12 @@ jobs:
             - checkout
             - run:
                   name: Download redoc
-                  command: |
-                        cd redoc
-                        npm i redoc-cli
+                  working_directory: redoc
+                  command: npm i redoc-cli
             - run:
                   name: Build api doc
+                  working_directory: redoc
                   command: |
-                      cd redoc
                       npx redoc-cli bundle \
                           --title="SHIPS API" \
                           --output=ships-rest-api.html \
