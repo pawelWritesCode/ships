@@ -1,5 +1,24 @@
 version: 2.1
 
+workflows:
+    version: 2
+    build_and_test:
+        jobs:
+            - build-backend-go
+            - build-godog-go
+            - build-front-end
+            - go-unit-tests:
+                  requires:
+                      - build-backend-go
+            - go-e2e-tests:
+                  requires:
+                      - build-backend-go
+                      - build-godog-go
+            - build-api-doc:
+                  requires:
+                      - go-unit-tests
+                      - go-e2e-tests
+
 jobs:
     
     build-backend-go:
@@ -58,17 +77,28 @@ jobs:
     go-unit-tests:
         docker:
             -   image: circleci/golang:1.15.1
-        working_directory: /go/src/github.com/{{ORG_NAME}}/{{REPO_NAME}}
+        working_directory: /go/src/github.com/pawelWritesCode/ships
         steps:
             - checkout
             -   restore_cache:
                     keys:
                         - go-mod-files-{{ checksum "backend-go/go.sum" }}
             -   run:
+                    name: Create temporary dir for code coverage
+                    working_directory: backend-go
+                    command: mkdir codecov
+            -   run:
                     name: Run backend unit tests
                     working_directory: backend-go
-                    command: go test -race -cover ./...
-
+                    command: go test -race -coverprofile=c.out ./...
+            -   run:
+                    name: Process code coverage
+                    working_directory: backend-go
+                    command: |
+                        go tool cover -html=c.out -o coverage.html
+                        mv coverage.html codecov
+            - store_artifacts:
+                    path: backend-go/codecov
     go-e2e-tests:
         docker:
             -   image: circleci/golang:1.14.0
@@ -95,8 +125,11 @@ jobs:
                     working_directory: godog
                     command: |
                         sleep 10
+                        mkdir cucumber
                         godog --version
-                        godog
+                        godog --format junit > cucumber/junit.xml && cat cucumber/junit.xml
+            -   store_test_results:
+                    path: godog/cucumber
 
     build-api-doc:
         docker:
@@ -115,22 +148,7 @@ jobs:
                           --title="SHIPS API" \
                           --output=ships-rest-api.html \
                           api.yml
-
-workflows:
-    version: 2
-    build_and_test:
-        jobs:
-            - build-backend-go
-            - build-godog-go
-            - build-front-end
-            - go-unit-tests:
-                requires:
-                    - build-backend-go
-            - go-e2e-tests:
-                requires:
-                    - build-backend-go
-                    - build-godog-go
-            - build-api-doc:
-                requires:
-                    - go-unit-tests
-                    - go-e2e-tests
+                      ls -la
+                      pwd
+            -   store_artifacts:
+                    path: redoc/ships-rest-api.html
