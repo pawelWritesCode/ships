@@ -5,27 +5,39 @@ defaults: &defaults
         -   image: circleci/golang:1.15.1
     working_directory: /go/src/github.com/pawelWritesCode/ships
 
+pipeline: &pipeline
+    jobs:
+        - build-backend-go
+        - build-godog-go
+        - build-front-end
+        -   go-unit-tests:
+                requires:
+                    - build-backend-go
+        -   go-e2e-tests:
+                requires:
+                    - build-backend-go
+                    - build-godog-go
+        -   build-api-doc:
+                requires:
+                    - go-unit-tests
+                    - go-e2e-tests
+
+
 workflows:
     version: 2
     build_and_test:
-        jobs:
-            - build-backend-go
-            - build-godog-go
-            - build-front-end
-            - go-unit-tests:
-                  requires:
-                      - build-backend-go
-            - go-e2e-tests:
-                  requires:
-                      - build-backend-go
-                      - build-godog-go
-            - build-api-doc:
-                  requires:
-                      - go-unit-tests
-                      - go-e2e-tests
+        <<: *pipeline
+    nightly:
+        <<: *pipeline
+        triggers:
+            -   schedule:
+                    cron: "0 0 * * *"
+                    filters:
+                        branches:
+                            only:
+                                - master
 
 jobs:
-    
     build-backend-go:
         <<: *defaults
         steps:
@@ -42,7 +54,6 @@ jobs:
                     key: go-mod-files-{{ checksum "backend-go/go.sum" }}
                     paths:
                         - "/go/pkg/mod"
-                            
     build-godog-go:
         <<: *defaults
         steps:
@@ -58,7 +69,6 @@ jobs:
                     key: go-mod-files-{{ checksum "godog/go.sum" }}
                     paths:
                         - "/go/pkg/mod"
-
     build-front-end:
         docker:
             -   image: circleci/node:14.15.1
@@ -127,7 +137,6 @@ jobs:
                         godog --format junit > cucumber/junit.xml && cat cucumber/junit.xml
             -   store_test_results:
                     path: godog/cucumber
-
     build-api-doc:
         docker:
             -   image: circleci/node:14.15.1
