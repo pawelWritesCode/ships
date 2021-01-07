@@ -91,6 +91,6 @@ jobs:
             -   name: Build api doc
                 run: |
                     cd redoc
-                    npx redoc-cli bundle --title="SHIPS API" --output=ships-rest-api.html api.yml
+                    npx redoc-cli bundle --title="SHIPS-API" --output=ships-rest-api.html api.yml
                     ls -la
                     pwd
