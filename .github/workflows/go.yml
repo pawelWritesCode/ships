@@ -1,54 +1,99 @@
 name: ships
 
 on:
-  push:
-    branches: [ master ]
-  pull_request:
-    branches: [ master ]
+    push:
+        branches: [ master ]
+    pull_request:
+        branches: [ master ]
 
 jobs:
 
-  build-backend-go:
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v2
+    build-backend-go:
+        runs-on: ubuntu-latest
+        steps:
+            -   uses: actions/checkout@v2
 
-    - name: Set up GoLang
-      uses: actions/setup-go@v2
-      with:
-        go-version: 1.15
+            -   name: Set up GoLang
+                uses: actions/setup-go@v2
+                with:
+                    go-version: 1.15
 
-    - name: Build back-end
-      run: |
-        cd backend-go
-        GO111MODULE=on go get -v -t -d ./...
+            -   name: Build back-end
+                run: |
+                    cd backend-go
+                    GO111MODULE=on go get -v -t -d ./...
 
-  build-godog-go:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
+    build-godog-go:
+        runs-on: ubuntu-latest
+        steps:
+            -   uses: actions/checkout@v2
 
-      - name: Set up GoLang
-        uses: actions/setup-go@v2
-        with:
-          go-version: 1.15
+            -   name: Set up GoLang
+                uses: actions/setup-go@v2
+                with:
+                    go-version: 1.15
 
-      - name: Build godog
-        run: |
-          cd godog
-          GO111MODULE=on go get -v -t -d ./...
+            -   name: Build godog
+                run: |
+                    cd godog
+                    GO111MODULE=on go get -v -t -d ./...
 
-  build-front-end:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
+    build-front-end:
+        runs-on: ubuntu-latest
+        steps:
+            -   uses: actions/checkout@v2
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v1
-        with:
-          node-version: 15.x
+            -   name: Set up Node.js
+                uses: actions/setup-node@v1
+                with:
+                    node-version: 15.x
 
-      - name: Download front-end dependencies
-        run: |
-          cd frontend
-          yarn install
+            -   name: Download front-end dependencies
+                run: |
+                    cd frontend
+                    yarn install
+
+    backend-unit-tests:
+        runs-on: ubuntu-latest
+        steps:
+            -   uses: actions/checkout@v2
+
+            -   name: Set up GoLang
+                uses: actions/setup-go@v2
+                with:
+                    go-version: 1.15
+
+            -   name: Build back-end
+                run: |
+                    cd backend-go
+                    GO111MODULE=on go get -v -t -d ./...
+
+            -   name: Run unit tests
+                run: |
+                    cd backend-go
+                    go test -race -coverprofile=c.out ./...
+
+    build-api-doc:
+        runs-on: ubuntu-latest
+        steps:
+            -   uses: actions/checkout@v2
+
+            -   name: Set up Node.js
+                uses: actions/setup-node@v1
+                with:
+                  node-version: 15.x
+
+            -   name: Download redoc
+                run: |
+                    cd redoc
+                    npm i redoc-cli
+
+            -   name: Build api doc
+                run: |
+                    cd redoc
+                    npx redoc-cli bundle \
+                    --title="SHIPS API" \
+                    --output=ships-rest-api.html \
+                    api.yml
+                    ls -la
+                    pwd
