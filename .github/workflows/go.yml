@@ -8,22 +8,47 @@ on:
 
 jobs:
 
-  build:
+  build-backend-go:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
 
-    - name: Set up Go
+    - name: Set up GoLang
       uses: actions/setup-go@v2
       with:
         go-version: 1.15
 
-    - name: Build
+    - name: Build back-end
       run: |
         cd backend-go
-        go build -v ./...
+        GO111MODULE=on go get -v -t -d ./...
 
-    - name: Test
-      run: |
-        cd backend-go
-        go test -v ./...
+  build-godog-go:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Set up GoLang
+        uses: actions/setup-go@v2
+        with:
+          go-version: 1.15
+
+      - name: Build godog
+        run: |
+          cd godog
+          GO111MODULE=on go get -v -t -d ./...
+
+  build-front-end:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: 15.x
+
+      - name: Download front-end dependencies
+        run: |
+          cd frontend
+          yarn install
