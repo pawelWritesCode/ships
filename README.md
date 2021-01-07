@@ -1,5 +1,5 @@
 [![CircleCI](https://circleci.com/gh/pawelWritesCode/ships.svg?style=shield)](<LINK>)
-[![GitHubActions](https://github.com/pawelWritesCode/ships/workflows/Go/badge.svg)](https://github.com/pawelWritesCode/ships/actions)
+[![GitHubActions](https://github.com/pawelWritesCode/ships/workflows/ships/badge.svg)](https://github.com/pawelWritesCode/ships/actions)
 # Ships
 
 ## Installation:
