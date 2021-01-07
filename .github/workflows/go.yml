@@ -73,6 +73,32 @@ jobs:
                     cd backend-go
                     go test -race -coverprofile=c.out ./...
 
+    e2e-tests:
+        runs-on: ubuntu-latest
+        steps:
+              -   uses: actions/checkout@v2
+
+              -   name: Download godog binary
+                  run: |
+                      cd godog
+                      GO111MODULE=on go get github.com/cucumber/godog/cmd/godog
+
+              -   name: Turn on backend
+                  run: |
+                      pwd
+                      cd backend-go
+                      echo " " > .env
+                      go run main.go &
+
+              -   name: Run e2e tests
+                  run: |
+                      pwd
+                      cd godog
+                      sleep 10
+                      mkdir cucumber
+                      godog --version
+                      godog --format junit > cucumber/junit.xml && cat cucumber/junit.xml
+
     build-api-doc:
         runs-on: ubuntu-latest
         steps:
