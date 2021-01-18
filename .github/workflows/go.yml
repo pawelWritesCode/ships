@@ -19,9 +19,8 @@ jobs:
                     go-version: 1.15
 
             -   name: Build back-end
-                run: |
-                    cd backend-go
-                    GO111MODULE=on go get -v -t -d ./...
+                working-directory: backend-go
+                run: GO111MODULE=on go get -v -t -d ./...
 
     build-godog-go:
         runs-on: ubuntu-latest
@@ -34,9 +33,8 @@ jobs:
                     go-version: 1.15
 
             -   name: Build godog
-                run: |
-                    cd godog
-                    GO111MODULE=on go get -v -t -d ./...
+                working-directory: godog
+                run: GO111MODULE=on go get -v -t -d ./...
 
     build-front-end:
         runs-on: ubuntu-latest
@@ -49,9 +47,8 @@ jobs:
                     node-version: 15.x
 
             -   name: Download front-end dependencies
-                run: |
-                    cd frontend
-                    yarn install
+                working-directory: frontend
+                run: yarn install
 
     backend-unit-tests:
         runs-on: ubuntu-latest
@@ -64,14 +61,58 @@ jobs:
                     go-version: 1.15
 
             -   name: Build back-end
-                run: |
-                    cd backend-go
-                    GO111MODULE=on go get -v -t -d ./...
+                working-directory: backend-go
+                run: GO111MODULE=on go get -v -t -d ./...
 
             -   name: Run unit tests
-                run: |
-                    cd backend-go
-                    go test -race -coverprofile=c.out ./...
+                working-directory: backend-go
+                run: go test -race -coverprofile=c.out ./...
+
+    e2e-tests:
+        runs-on: ubuntu-latest
+        steps:
+              -   uses: actions/checkout@v2
+
+              -   name: Set up GoLang
+                  uses: actions/setup-go@v2
+                  with:
+                      go-version: 1.15
+
+              -   name: Download godog binary
+                  working-directory: godog
+                  run: GO111MODULE=on go get github.com/cucumber/godog/cmd/godog
+
+              -   name: Start MongoDB
+                  uses: supercharge/mongodb-github-action@1.3.0
+                  with:
+                      mongodb-version: 4.2
+                      mongodb-replica-set: ships
+
+              -   name: Turn on backend
+                  working-directory: backend-go
+                  run: |
+                      echo " " > .env
+                      go run main.go &
+                      sleep 20
+                  env:
+                      TIMEOUT: 60
+                      DB_TYPE: mongodb
+                      DB_CONNECTION_STRING: mongodb://localhost:27017/?authSource=admin&retryWrites=true&w=majority
+
+              -   name: Run e2e tests
+                  working-directory: godog
+                  run: |
+                      pwd
+                      echo " " > .env
+                      GO111MODULE=on go get github.com/cucumber/godog/cmd/godog@v0.11.0
+                      sleep 10
+                      mkdir cucumber
+                      godog --version
+                      ls -la
+                      godog
+                  env:
+                      PORT: 5000
+                      ADDR: localhost
 
     build-api-doc:
         runs-on: ubuntu-latest
@@ -84,13 +125,12 @@ jobs:
                   node-version: 15.x
 
             -   name: Download redoc
-                run: |
-                    cd redoc
-                    npm i redoc-cli
+                working-directory: redoc
+                run: npm i redoc-cli
 
             -   name: Build api doc
+                working-directory: redoc
                 run: |
-                    cd redoc
                     npx redoc-cli bundle --title=SHIPS --output=ships-rest-api.html api.yml
                     ls -la
                     pwd

@@ -28,7 +28,7 @@ func init() {
 	err := godotenv.Load()
 
 	if err != nil {
-		log.Fatalf("%v", err)
+		log.Println("Missing .env file, loading env variables from OS")
 	}
 
 	jwtKey = []byte(os.Getenv("JWT_KEY"))

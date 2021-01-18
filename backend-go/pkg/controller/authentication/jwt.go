@@ -31,12 +31,12 @@ func SignIn(r *user.UserRepo) gin.HandlerFunc {
 		err := r.Collection.FindOne(ctx, bson.M{"username": creds.Username, "password": creds.Password}).Decode(&fetchedUser)
 
 		if err != nil {
-			c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"error": "Invalid credentials"})
+			c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"error": "Invalid credentials 1 " + err.Error()})
 			return
 		}
 
 		if fetchedUser.Password != creds.Password || fetchedUser.Username != creds.Username {
-			c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"error": "Invalid credentials"})
+			c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"error": "Invalid credentials 2"})
 			return
 		}
 
