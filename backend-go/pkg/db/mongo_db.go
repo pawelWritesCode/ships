@@ -25,7 +25,7 @@ func New(dbType, uri string) DBCredentials {
 
 //GetMongoDB sets up MongoDB and returns pointer to DB instance.
 func (dbc DBCredentials) GetMongoDB() *mongo.Database {
-	ctx, _ := context.WithTimeout(context.Background(), 10*time.Second)
+	ctx, _ := context.WithTimeout(context.Background(), 60*time.Second)
 
 	client, err := mongo.Connect(ctx, options.Client().
 		ApplyURI(dbc.Uri).
@@ -35,7 +35,7 @@ func (dbc DBCredentials) GetMongoDB() *mongo.Database {
 
 	checkErr(err)
 
-	ctx, _ = context.WithTimeout(context.Background(), 5*time.Second)
+	ctx, _ = context.WithTimeout(context.Background(), 60*time.Second)
 	err = client.Ping(ctx, readpref.Primary()) //proof of successful connection.
 
 	checkErr(err)

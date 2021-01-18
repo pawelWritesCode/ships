@@ -433,7 +433,7 @@ func (af *ApiFeature) ICreateData(data *godog.DocString) error {
 		}
 
 		if af.lastResponse.StatusCode != 200 {
-			return fmt.Errorf("cannot login user %s", reqBody)
+			return fmt.Errorf("cannot login user %s, err: %s", reqBody, string(af.lastResponseBody))
 		}
 
 		var responseContent map[string]interface{}

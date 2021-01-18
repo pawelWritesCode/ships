@@ -15,19 +15,23 @@ import (
 var dbCredentials db.DBCredentials
 
 func init() {
-	checkErr(godotenv.Load())
+	err := godotenv.Load()
+	if err != nil {
+		log.Println("Missing .env file, loading env variables from OS")
+	}
+
 	dbCredentials = db.New(os.Getenv("DB_TYPE"), os.Getenv("DB_CONNECTION_STRING"))
 }
 
 func main() {
 	r := gin.Default()
 	r.Use(cors.New(cors.Config{
-		AllowAllOrigins: true,
+		AllowAllOrigins:  true,
 		AllowMethods:     []string{"GET", "POST", "PUT", "DELETE", "HEAD"},
 		AllowHeaders:     []string{"Origin", "Content-Length", "Content-Type", "Authorization"},
 		ExposeHeaders:    []string{"Content-Length"},
 		AllowCredentials: true,
-		MaxAge: 12 * time.Hour,
+		MaxAge:           12 * time.Hour,
 	}))
 
 	timeout, err := strconv.Atoi(os.Getenv("TIMEOUT"))
@@ -38,7 +42,7 @@ func main() {
 	router.RouteAuthentication(r, database, timeout)
 	router.RouteRestAPI(r, database, timeout)
 
-	r.Run("localhost:5000") // listen and serve on 0.0.0.0:8080 (for windows "localhost:8080")
+	r.Run("localhost:5000")
 }
 
 // checkErr checks error, if found it log & exit.
