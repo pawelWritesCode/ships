@@ -127,6 +127,9 @@ jobs:
                         echo " " > .env
                         go run main.go
                     background: true
+                    environment:
+                        TIMEOUT: 60
+                        DB_TYPE: mongodb
             -   run:
                     name: Make e2e tests
                     working_directory: godog
@@ -135,6 +138,9 @@ jobs:
                         mkdir cucumber
                         godog --version
                         godog --format junit > cucumber/junit.xml && cat cucumber/junit.xml
+                    environment:
+                        PORT: 5000
+                        ADDR: localhost
             -   store_test_results:
                     path: godog/cucumber
     build-api-doc:
