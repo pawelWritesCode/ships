@@ -4,7 +4,6 @@ import (
 	"context"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
-	"go.mongodb.org/mongo-driver/mongo/readconcern"
 	"go.mongodb.org/mongo-driver/mongo/readpref"
 	"go.mongodb.org/mongo-driver/mongo/writeconcern"
 	"log"
@@ -30,8 +29,8 @@ func (dbc DBCredentials) GetMongoDB() *mongo.Database {
 	client, err := mongo.Connect(ctx, options.Client().
 		ApplyURI(dbc.Uri).
 		SetRetryWrites(false).
-		SetWriteConcern(writeconcern.New(writeconcern.WMajority())).
-		SetReadConcern(readconcern.Linearizable()))
+		SetWriteConcern(writeconcern.New(writeconcern.WMajority())))
+	//SetReadConcern(readconcern.Linearizable()))
 
 	checkErr(err)
 

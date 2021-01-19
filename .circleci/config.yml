@@ -137,7 +137,7 @@ jobs:
                     name: Make e2e tests
                     working_directory: godog
                     command: |
-                        sleep 10
+                        sleep 25
                         mkdir cucumber
                         godog --version
                         godog --format junit > cucumber/junit.xml && cat cucumber/junit.xml
