@@ -138,6 +138,9 @@ jobs:
                         mkdir cucumber
                         godog --version
                         godog --format junit > cucumber/junit.xml && cat cucumber/junit.xml
+                    environment:
+                        PORT: 5000
+                        ADDR: localhost
             -   store_test_results:
                     path: godog/cucumber
     build-api-doc:
