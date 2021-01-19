@@ -127,6 +127,9 @@ jobs:
                         echo " " > .env
                         go run main.go
                     background: true
+                    environment:
+                        TIMEOUT: 60
+                        DB_TYPE: mongodb
             -   run:
                     name: Make e2e tests
                     working_directory: godog
