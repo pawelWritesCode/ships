@@ -109,7 +109,9 @@ jobs:
             - store_artifacts:
                     path: backend-go/codecov
     go-e2e-tests:
-        <<: *defaults
+        docker:
+            -   image: circleci/golang:1.15.1
+            -   image: circleci/mongo:4.2.11
         steps:
             - checkout
             -   restore_cache:
@@ -130,6 +132,7 @@ jobs:
                     environment:
                         TIMEOUT: 60
                         DB_TYPE: mongodb
+                        DB_CONNECTION_STRING: mongodb://localhost:27017/?authSource=admin&retryWrites=true&w=majority
             -   run:
                     name: Make e2e tests
                     working_directory: godog
