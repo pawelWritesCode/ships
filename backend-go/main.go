@@ -42,7 +42,7 @@ func main() {
 	router.RouteAuthentication(r, database, timeout)
 	router.RouteRestAPI(r, database, timeout)
 
-	r.Run("localhost:5000")
+	r.Run(":5000")
 }
 
 // checkErr checks error, if found it log & exit.
